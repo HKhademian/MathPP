@@ -7,9 +7,16 @@ namespace MathPP
 {
     using size_t = unsigned int;
 
-#define if_size_ge(X)      \
-    template <size_t SIZE> \
+#define if_size_ge(X, T)       \
+    template <size_t SIZE = S> \
     typename std::enable_if<(S == SIZE) && (SIZE >= X), T>::type
+
+#define if_size_in(X, Y, T)    \
+    template <size_t SIZE = S> \
+    typename std::enable_if<(S == SIZE) && (S >= X) && (S < Y), T>::type
+
+    template <size_t S, typename T>
+    struct Vektor;
 
     template <size_t S, typename T>
     struct Vektor
@@ -35,47 +42,58 @@ namespace MathPP
             return ret;
         }
 
-        if_size_ge(1) & v1() const { return components[0]; }
-        if_size_ge(1) & v1() { return components[0]; }
-        if_size_ge(1) const &x() const { return components[0]; }
-        if_size_ge(1) & x() { return components[0]; }
-        if_size_ge(1) const &width() const { return components[0]; }
-        if_size_ge(1) & width() { return components[0]; }
+        if_size_ge(1, T) const &v1() const { return components[0]; }
+        if_size_ge(1, T) & v1() { return components[0]; }
+        if_size_ge(1, T) const &x() const { return components[0]; }
+        if_size_ge(1, T) & x() { return components[0]; }
+        if_size_ge(1, T) const &width() const { return components[0]; }
+        if_size_ge(1, T) & width() { return components[0]; }
 
-        if_size_ge(2) const &v2() const { return components[1]; }
-        if_size_ge(2) & v2() { return components[1]; }
-        if_size_ge(2) const &y() const { return components[1]; }
-        if_size_ge(2) & y() { return components[1]; }
-        if_size_ge(2) const &height() const { return components[1]; }
-        if_size_ge(2) & height() { return components[1]; }
+        if_size_ge(2, T) const &v2() const { return components[1]; }
+        if_size_ge(2, T) & v2() { return components[1]; }
+        if_size_ge(2, T) const &y() const { return components[1]; }
+        if_size_ge(2, T) & y() { return components[1]; }
+        if_size_ge(2, T) const &height() const { return components[1]; }
+        if_size_ge(2, T) & height() { return components[1]; }
 
-        if_size_ge(3) const &v3() const { return components[2]; }
-        if_size_ge(3) & v3() { return components[2]; }
-        if_size_ge(3) const &z() const { return components[2]; }
-        if_size_ge(3) & z() { return components[2]; }
-        if_size_ge(3) const &depth() const { return components[2]; }
-        if_size_ge(3) & depth() { return components[2]; }
+        if_size_ge(3, T) const &v3() const { return components[2]; }
+        if_size_ge(3, T) & v3() { return components[2]; }
+        if_size_ge(3, T) const &z() const { return components[2]; }
+        if_size_ge(3, T) & z() { return components[2]; }
+        if_size_ge(3, T) const &depth() const { return components[2]; }
+        if_size_ge(3, T) & depth() { return components[2]; }
 
-        if_size_ge(4) const &v4() const { return components[3]; }
-        if_size_ge(4) & v4() { return components[3]; }
-        if_size_ge(4) const &w() const { return components[3]; }
-        if_size_ge(4) & w() { return components[3]; }
-        if_size_ge(4) const &layer() const { return components[3]; }
-        if_size_ge(4) & layer() { return components[3]; }
+        if_size_ge(4, T) const &v4() const { return components[3]; }
+        if_size_ge(4, T) & v4() { return components[3]; }
+        if_size_ge(4, T) const &w() const { return components[3]; }
+        if_size_ge(4, T) & w() { return components[3]; }
+        if_size_ge(4, T) const &layer() const { return components[3]; }
+        if_size_ge(4, T) & layer() { return components[3]; }
+
+        using Vektor2 = Vektor<2, T>;
+        if_size_in(3, 5, Vektor2) pos() const
+        {
+            return Vektor2{{v1(), v2()}};
+        }
+
+        if_size_in(4, 5, Vektor2) size() const
+        {
+            return Vektor2{{v3(), v4()}};
+        }
     };
 #undef if_size_ge
 
     template <typename T>
-    using Vector2 = Vektor<2, T>;
+    using Vektor2 = Vektor<2, T>;
 
     template <typename T>
-    using Vector3 = Vektor<3, T>;
+    using Vektor3 = Vektor<3, T>;
 
     template <typename T>
-    using Vector4 = Vektor<4, T>;
+    using Vektor4 = Vektor<4, T>;
 
-    using Vector2S = Vektor<2, signed int>;
-    using Vector2I = Vektor<2, unsigned int>;
+    using Vektor2S = Vektor<2, signed int>;
+    using Vektor2I = Vektor<2, unsigned int>;
 
     template <size_t S, typename T>
     Vektor<S, T> operator+(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
