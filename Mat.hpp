@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.hpp"
 #include <type_traits>
 #include <typeinfo>
 #include <ostream>
@@ -21,13 +22,24 @@ namespace MathPP
     template <size_t S, typename T>
     struct Vektor
     {
-    private:
-    public:
         using this_t = Vektor<S, T>;
         using SIZE = std::integral_constant<size_t, S>;
         using TYPE = T;
 
         T components[SIZE::value] = {0};
+
+        template <size_t _S, size_t _OFF = 0>
+        static typename std::enable_if<(_S >= S - _OFF), this_t>::type const &
+        from(Vektor<_S, T> const &vek)
+        {
+            return *(this_t const *)(void const *)(&vek.components + _OFF);
+        }
+        template <size_t _S, size_t _OFF = 0>
+        static typename std::enable_if<(_S >= S - _OFF), this_t>::type &
+        from(Vektor<_S, T> &vek)
+        {
+            return *(this_t *)(void *)(&vek.components + _OFF);
+        }
 
         static this_t const &from(T const *components)
         {
@@ -80,19 +92,35 @@ namespace MathPP
         if_size_ge(4, T) & layer() { return components[3]; }
 
         /*
+         * conversion
+         */
+
+        template <size_t SIZE, size_t OFFSET = 0>
+        typename std::enable_if<(S >= SIZE + OFFSET), Vektor<SIZE, T>>::type const &subvec() const
+        {
+            return Vektor<SIZE, T>::from((T const *)(void const *)&components[OFFSET]);
+        }
+
+        template <size_t SIZE, size_t OFFSET = 0>
+        typename std::enable_if<(S >= SIZE + OFFSET), Vektor<SIZE, T>>::type &subvec()
+        {
+            return Vektor<SIZE, T>::from((T *)(void *)&components[OFFSET]);
+        }
+
+        /*
          * 2D
          */
 
         using Vektor2 = Vektor<2, T>;
 
-        if_size_in(3, 5, Vektor2) const &pos() const { return Vektor2::from(components); }
-        if_size_in(3, 5, Vektor2) & pos() { return Vektor2::from(components); }
+        if_size_in(3, 5, Vektor2) const &pos() const { return subvec<2>(); }
+        if_size_in(3, 5, Vektor2) & pos() { return subvec<2>(); }
 
         if_size_in(3, 4, T) const &size() const { return v3(); }
         if_size_in(3, 4, T) & size() { return v3(); }
 
-        if_size_in(4, 5, Vektor2) const &size() const { return Vektor2::from((T const *)(void const *)&components[2]); }
-        if_size_in(4, 5, Vektor2) & size() { return Vektor2::from((T *)(void *)&components[2]); }
+        if_size_in(4, 5, Vektor2) const &size() const { return subvec<2, 2>(); }
+        if_size_in(4, 5, Vektor2) & size() { return subvec<2, 2>(); }
 
         /*
          * 3D
@@ -100,11 +128,11 @@ namespace MathPP
 
         using Vektor3 = Vektor<3, T>;
 
-        if_size_in(5, 7, Vektor2) const &pos() const { return Vektor3::from(components); }
-        if_size_in(5, 7, Vektor2) & pos() { return Vektor3::from(components); }
+        if_size_in(5, 7, Vektor3) const &pos() const { return subvec<3>(); }
+        if_size_in(5, 7, Vektor3) & pos() { return subvec<3>(); }
 
-        if_size_in(6, 7, Vektor2) const &size() const { return Vektor2::from((T const *)(void const *)&components[3]); }
-        if_size_in(6, 7, Vektor2) & size() { return Vektor2::from((T *)(void *)&components[3]); }
+        if_size_in(6, 7, Vektor3) const &size() const { return subvec<3, 3>(); }
+        if_size_in(6, 7, Vektor3) & size() { return subvec<3, 3>(); }
     };
 #undef if_size_ge
 
@@ -120,12 +148,62 @@ namespace MathPP
     using Vektor2S = Vektor<2, signed int>;
     using Vektor2I = Vektor<2, unsigned int>;
 
+    /*
+     * Operators
+     */
+
     template <size_t S, typename T>
-    Vektor<S, T> operator+(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
+    auto operator+(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
     {
-        Vektor<S, T> ret;
-        for (auto &v : ret.components)
-            v = 1;
+        Vektor<S, typename Types::Plus<T, T>::V> ret;
+        for (auto i = 0; i < S; ++i)
+        {
+            ret.components[i] = lhs.components[i] + rhs.components[i];
+        }
+        return ret;
+    }
+
+    template <size_t S, typename T>
+    auto operator-(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
+    {
+        Vektor<S, typename Types::Minus<T, T>::V> ret;
+        for (auto i = 0; i < S; ++i)
+        {
+            ret.components[i] = lhs.components[i] - rhs.components[i];
+        }
+        return ret;
+    }
+
+    template <size_t S, typename T, typename V>
+    auto operator*(V v, const Vektor<S, T> &rhs)
+    {
+        Vektor<S, typename Types::Multiply<V, T>::V> ret;
+        for (auto i = 0; i < S; ++i)
+        {
+            ret.components[i] = v * rhs.components[i];
+        }
+        return ret;
+    }
+
+    template <size_t S, typename T, typename V>
+    auto operator*(const Vektor<S, T> &lhs, V v)
+    {
+        Vektor<S, typename Types::Multiply<T, V>::V> ret;
+        for (auto i = 0; i < S; ++i)
+        {
+            ret.components[i] = lhs.components[i] * v;
+        }
+        return ret;
+    }
+
+    template <size_t S, typename T, typename V>
+    auto operator/(const Vektor<S, T> &lhs, V v)
+    {
+        Vektor<S, typename Types::Division<T, V>::V> ret;
+        for (auto i = 0; i < S; ++i)
+        {
+            ret.components[i] = lhs.components[i] / v;
+        }
         return ret;
     }
 
@@ -197,5 +275,4 @@ namespace MathPP
         }
         return is;
     }
-
 }
