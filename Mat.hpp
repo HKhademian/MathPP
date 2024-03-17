@@ -19,19 +19,6 @@ namespace MathPP
 
         _T components[_S] = {0};
 
-        template <size_t __S, size_t __OFF = 0>
-        static typename std::enable_if<(_S >= __S - __OFF), this_t>::type const &
-        from(Vektor<_T, __S> const &vek)
-        {
-            return *(this_t const *)(void const *)(&vek.components + __OFF);
-        }
-        template <size_t __S, size_t __OFF = 0>
-        static typename std::enable_if<(_S >= __S - __OFF), this_t>::type &
-        from(Vektor<_T, __S> &vek)
-        {
-            return *(this_t *)(void *)(&vek.components + __OFF);
-        }
-
         static this_t const &from(_T const *components)
         {
             return *(this_t const *)(void const *)components;
