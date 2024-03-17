@@ -5,19 +5,19 @@ using namespace MathPP;
 
 int main()
 {
-    std::cout << sizeof(Vektor<0, int>) << std::endl;
-    std::cout << sizeof(int) << ":" << sizeof(Vektor<2, int>) << std::endl;
-    std::cout << sizeof(double) << ":" << sizeof(Vektor<2, double>) << std::endl;
-    std::cout << sizeof(float) << ":" << sizeof(Vektor<3, float>) << std::endl;
-    std::cout << "vek:: " << Vektor<10, int>::one() << Vektor2I::zero() << std::endl;
-    std::cout << Vektor<10, float>::SIZE::value << std::endl;
+    std::cout << sizeof(Vektor<int, 0>) << std::endl;
+    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 2>) << std::endl;
+    std::cout << sizeof(double) << ":" << sizeof(Vektor<double, 2>) << std::endl;
+    std::cout << sizeof(float) << ":" << sizeof(Vektor<float, 3>) << std::endl;
+    std::cout << "vek:: " << Vektor<int, 10>::one() << Vektor2I::zero() << std::endl;
+    std::cout << Vektor<float, 10>::SIZE::value << std::endl;
 
-    Vektor<4, int> vec;
+    Vektor<int, 4> vec;
     std::cin >> vec;
     std::cout << vec << std::endl;
     std::cout << vec.pos() << std::endl;
     // std::cout << vec.size() << std::endl;
-    Vektor<4, int> &vecB = vec;
+    Vektor<int, 4> &vecB = vec;
     auto &pos = vecB.pos();
     auto &width = vecB.size().width();
     pos.v1() *= 2;
@@ -34,9 +34,9 @@ int main()
     std::cout << "mul: " << vecB * 2.1f << "    " << sizeof(vecB * 2.1f) << std::endl;
     std::cout << "mul: " << vecB * 2.1 << "    " << sizeof(vecB * 2.1) << std::endl;
     std::cout << "div: " << vecB / 3 << std::endl;
-    std::cout << "div: " << vecB / 3.0f << std::endl;
-    std::cout << "div: " << vecB / 3.0 << std::endl;
+    std::cout << "div: " << vecB / 3.1f << std::endl;
+    std::cout << "div: " << vecB / 3.1 << std::endl;
     std::cout << "vecB: " << vecB << std::endl;
-    std::cout << "minus: " << vecB - Vektor<4, int>{1, 2, 3, 4} << std::endl;
+    std::cout << "minus: " << vecB - Vektor<int, 4>{1, 2, 3, 4} << std::endl;
     return 0;
 }

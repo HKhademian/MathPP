@@ -1,51 +1,42 @@
 #pragma once
 #include "Types.hpp"
 #include <type_traits>
-#include <typeinfo>
 #include <ostream>
 
 namespace MathPP
 {
     using size_t = unsigned int;
 
-#define if_size_ge(X, T)       \
-    template <size_t SIZE = S> \
-    typename std::enable_if<(S == SIZE) && (SIZE >= X), T>::type
-
-#define if_size_in(X, Y, T)    \
-    template <size_t SIZE = S> \
-    typename std::enable_if<(S == SIZE) && (S >= X) && (S < Y), T>::type
-
-    template <size_t S, typename T>
+    template <typename _T, size_t _S>
     struct Vektor;
 
-    template <size_t S, typename T>
+    template <typename _T, size_t _S>
     struct Vektor
     {
-        using this_t = Vektor<S, T>;
-        using SIZE = std::integral_constant<size_t, S>;
-        using TYPE = T;
+        using this_t = Vektor<_T, _S>;
+        using SIZE = std::integral_constant<size_t, _S>;
+        using TYPE = _T;
 
-        T components[SIZE::value] = {0};
+        _T components[_S] = {0};
 
-        template <size_t _S, size_t _OFF = 0>
-        static typename std::enable_if<(_S >= S - _OFF), this_t>::type const &
-        from(Vektor<_S, T> const &vek)
+        template <size_t __S, size_t __OFF = 0>
+        static typename std::enable_if<(_S >= __S - __OFF), this_t>::type const &
+        from(Vektor<_T, __S> const &vek)
         {
-            return *(this_t const *)(void const *)(&vek.components + _OFF);
+            return *(this_t const *)(void const *)(&vek.components + __OFF);
         }
-        template <size_t _S, size_t _OFF = 0>
-        static typename std::enable_if<(_S >= S - _OFF), this_t>::type &
-        from(Vektor<_S, T> &vek)
+        template <size_t __S, size_t __OFF = 0>
+        static typename std::enable_if<(_S >= __S - __OFF), this_t>::type &
+        from(Vektor<_T, __S> &vek)
         {
-            return *(this_t *)(void *)(&vek.components + _OFF);
+            return *(this_t *)(void *)(&vek.components + __OFF);
         }
 
-        static this_t const &from(T const *components)
+        static this_t const &from(_T const *components)
         {
             return *(this_t const *)(void const *)components;
         }
-        static this_t &from(T *components)
+        static this_t &from(_T *components)
         {
             return *(this_t *)(void *)components;
         }
@@ -63,61 +54,69 @@ namespace MathPP
             return ret;
         }
 
-        if_size_ge(1, T) const &v1() const { return components[0]; }
-        if_size_ge(1, T) & v1() { return components[0]; }
-        if_size_ge(1, T) const &x() const { return components[0]; }
-        if_size_ge(1, T) & x() { return components[0]; }
-        if_size_ge(1, T) const &width() const { return components[0]; }
-        if_size_ge(1, T) & width() { return components[0]; }
+#define if_size_ge(___X, ___T) \
+    template <size_t __S = _S> \
+    typename std::enable_if<(__S == _S) && (__S >= ___X), ___T>::type
 
-        if_size_ge(2, T) const &v2() const { return components[1]; }
-        if_size_ge(2, T) & v2() { return components[1]; }
-        if_size_ge(2, T) const &y() const { return components[1]; }
-        if_size_ge(2, T) & y() { return components[1]; }
-        if_size_ge(2, T) const &height() const { return components[1]; }
-        if_size_ge(2, T) & height() { return components[1]; }
+#define if_size_in(___X, ___Y, ___T) \
+    template <size_t __S = _S>       \
+    typename std::enable_if<(__S == _S) && (__S >= ___X) && (__S < ___Y), ___T>::type
 
-        if_size_ge(3, T) const &v3() const { return components[2]; }
-        if_size_ge(3, T) & v3() { return components[2]; }
-        if_size_ge(3, T) const &z() const { return components[2]; }
-        if_size_ge(3, T) & z() { return components[2]; }
-        if_size_ge(3, T) const &depth() const { return components[2]; }
-        if_size_ge(3, T) & depth() { return components[2]; }
+        if_size_ge(1, _T) const &v1() const { return components[0]; }
+        if_size_ge(1, _T) & v1() { return components[0]; }
+        if_size_ge(1, _T) const &x() const { return components[0]; }
+        if_size_ge(1, _T) & x() { return components[0]; }
+        if_size_ge(1, _T) const &width() const { return components[0]; }
+        if_size_ge(1, _T) & width() { return components[0]; }
 
-        if_size_ge(4, T) const &v4() const { return components[3]; }
-        if_size_ge(4, T) & v4() { return components[3]; }
-        if_size_ge(4, T) const &w() const { return components[3]; }
-        if_size_ge(4, T) & w() { return components[3]; }
-        if_size_ge(4, T) const &layer() const { return components[3]; }
-        if_size_ge(4, T) & layer() { return components[3]; }
+        if_size_ge(2, _T) const &v2() const { return components[1]; }
+        if_size_ge(2, _T) & v2() { return components[1]; }
+        if_size_ge(2, _T) const &y() const { return components[1]; }
+        if_size_ge(2, _T) & y() { return components[1]; }
+        if_size_ge(2, _T) const &height() const { return components[1]; }
+        if_size_ge(2, _T) & height() { return components[1]; }
+
+        if_size_ge(3, _T) const &v3() const { return components[2]; }
+        if_size_ge(3, _T) & v3() { return components[2]; }
+        if_size_ge(3, _T) const &z() const { return components[2]; }
+        if_size_ge(3, _T) & z() { return components[2]; }
+        if_size_ge(3, _T) const &depth() const { return components[2]; }
+        if_size_ge(3, _T) & depth() { return components[2]; }
+
+        if_size_ge(4, _T) const &v4() const { return components[3]; }
+        if_size_ge(4, _T) & v4() { return components[3]; }
+        if_size_ge(4, _T) const &w() const { return components[3]; }
+        if_size_ge(4, _T) & w() { return components[3]; }
+        if_size_ge(4, _T) const &layer() const { return components[3]; }
+        if_size_ge(4, _T) & layer() { return components[3]; }
 
         /*
          * conversion
          */
 
-        template <size_t SIZE, size_t OFFSET = 0>
-        typename std::enable_if<(S >= SIZE + OFFSET), Vektor<SIZE, T>>::type const &subvec() const
+        template <size_t __S, size_t __OFFSET = 0>
+        typename std::enable_if<(_S >= __S + __OFFSET), Vektor<_T, __S>>::type const &subvec() const
         {
-            return Vektor<SIZE, T>::from((T const *)(void const *)&components[OFFSET]);
+            return Vektor<_T, __S>::from((_T const *)(void const *)&components[__OFFSET]);
         }
 
-        template <size_t SIZE, size_t OFFSET = 0>
-        typename std::enable_if<(S >= SIZE + OFFSET), Vektor<SIZE, T>>::type &subvec()
+        template <size_t __S, size_t __OFFSET = 0>
+        typename std::enable_if<(_S >= __S + __OFFSET), Vektor<_T, __S>>::type &subvec()
         {
-            return Vektor<SIZE, T>::from((T *)(void *)&components[OFFSET]);
+            return Vektor<_T, __S>::from((_T *)(void *)&components[__OFFSET]);
         }
 
         /*
          * 2D
          */
 
-        using Vektor2 = Vektor<2, T>;
+        using Vektor2 = Vektor<_T, 2>;
 
         if_size_in(3, 5, Vektor2) const &pos() const { return subvec<2>(); }
         if_size_in(3, 5, Vektor2) & pos() { return subvec<2>(); }
 
-        if_size_in(3, 4, T) const &size() const { return v3(); }
-        if_size_in(3, 4, T) & size() { return v3(); }
+        if_size_in(3, 4, _T) const &size() const { return v3(); }
+        if_size_in(3, 4, _T) & size() { return v3(); }
 
         if_size_in(4, 5, Vektor2) const &size() const { return subvec<2, 2>(); }
         if_size_in(4, 5, Vektor2) & size() { return subvec<2, 2>(); }
@@ -126,36 +125,38 @@ namespace MathPP
          * 3D
          */
 
-        using Vektor3 = Vektor<3, T>;
+        using Vektor3 = Vektor<_T, 3>;
 
         if_size_in(5, 7, Vektor3) const &pos() const { return subvec<3>(); }
         if_size_in(5, 7, Vektor3) & pos() { return subvec<3>(); }
 
         if_size_in(6, 7, Vektor3) const &size() const { return subvec<3, 3>(); }
         if_size_in(6, 7, Vektor3) & size() { return subvec<3, 3>(); }
-    };
+
 #undef if_size_ge
+#undef if_size_in
+    };
 
     template <typename T>
-    using Vektor2 = Vektor<2, T>;
+    using Vektor2 = Vektor<T, 2>;
 
     template <typename T>
-    using Vektor3 = Vektor<3, T>;
+    using Vektor3 = Vektor<T, 3>;
 
     template <typename T>
-    using Vektor4 = Vektor<4, T>;
+    using Vektor4 = Vektor<T, 4>;
 
-    using Vektor2S = Vektor<2, signed int>;
-    using Vektor2I = Vektor<2, unsigned int>;
+    using Vektor2S = Vektor<signed int, 2>;
+    using Vektor2I = Vektor<unsigned int, 2>;
 
     /*
      * Operators
      */
 
-    template <size_t S, typename T>
-    auto operator+(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
+    template <typename T, typename U, size_t S>
+    auto operator+(Vektor<T, S> const &lhs, Vektor<U, S> const &rhs)
     {
-        Vektor<S, typename Types::Plus<T, T>::V> ret;
+        Vektor<typename Types::Plus<T, U>::V, S> ret;
         for (auto i = 0; i < S; ++i)
         {
             ret.components[i] = lhs.components[i] + rhs.components[i];
@@ -163,10 +164,10 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t S, typename T>
-    auto operator-(const Vektor<S, T> &lhs, const Vektor<S, T> &rhs)
+    template <typename T, typename U, size_t S>
+    auto operator-(Vektor<T, S> const &lhs, Vektor<U, S> const &rhs)
     {
-        Vektor<S, typename Types::Minus<T, T>::V> ret;
+        Vektor<typename Types::Minus<T, U>::V, S> ret;
         for (auto i = 0; i < S; ++i)
         {
             ret.components[i] = lhs.components[i] - rhs.components[i];
@@ -174,10 +175,10 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t S, typename T, typename V>
-    auto operator*(V v, const Vektor<S, T> &rhs)
+    template <typename T, typename V, size_t S>
+    auto operator*(V v, Vektor<T, S> const &rhs)
     {
-        Vektor<S, typename Types::Multiply<V, T>::V> ret;
+        Vektor<typename Types::Multiply<V, T>::V, S> ret;
         for (auto i = 0; i < S; ++i)
         {
             ret.components[i] = v * rhs.components[i];
@@ -185,10 +186,10 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t S, typename T, typename V>
-    auto operator*(const Vektor<S, T> &lhs, V v)
+    template <typename T, typename V, size_t S>
+    auto operator*(Vektor<T, S> const &lhs, V v)
     {
-        Vektor<S, typename Types::Multiply<T, V>::V> ret;
+        Vektor<typename Types::Multiply<T, V>::V, S> ret;
         for (auto i = 0; i < S; ++i)
         {
             ret.components[i] = lhs.components[i] * v;
@@ -196,10 +197,10 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t S, typename T, typename V>
-    auto operator/(const Vektor<S, T> &lhs, V v)
+    template <typename T, typename V, size_t S>
+    auto operator/(Vektor<T, S> const &lhs, V v)
     {
-        Vektor<S, typename Types::Division<T, V>::V> ret;
+        Vektor<typename Types::Division<T, V>::V, S> ret;
         for (auto i = 0; i < S; ++i)
         {
             ret.components[i] = lhs.components[i] / v;
@@ -247,8 +248,8 @@ namespace MathPP
     //     return ret;
     // }
 
-    template <size_t S, typename T>
-    std::ostream &operator<<(std::ostream &os, const Vektor<S, T> &vek)
+    template <typename T, size_t S>
+    std::ostream &operator<<(std::ostream &os, Vektor<T, S> const &vek)
     {
         bool first = true;
         for (auto const &v : vek.components)
@@ -266,8 +267,8 @@ namespace MathPP
         return os;
     }
 
-    template <size_t S, typename T>
-    std::istream &operator>>(std::istream &is, Vektor<S, T> &vek)
+    template <typename T, size_t S>
+    std::istream &operator>>(std::istream &is, Vektor<T, S> &vek)
     {
         for (auto &v : vek.components)
         {
