@@ -29,6 +29,15 @@ namespace MathPP
 
         T components[SIZE::value] = {0};
 
+        static this_t const &from(T const *components)
+        {
+            return *(this_t const *)(void const *)components;
+        }
+        static this_t &from(T *components)
+        {
+            return *(this_t *)(void *)components;
+        }
+
         static this_t zero()
         {
             return this_t{0};
@@ -70,16 +79,32 @@ namespace MathPP
         if_size_ge(4, T) const &layer() const { return components[3]; }
         if_size_ge(4, T) & layer() { return components[3]; }
 
-        using Vektor2 = Vektor<2, T>;
-        if_size_in(3, 5, Vektor2) pos() const
-        {
-            return Vektor2{{v1(), v2()}};
-        }
+        /*
+         * 2D
+         */
 
-        if_size_in(4, 5, Vektor2) size() const
-        {
-            return Vektor2{{v3(), v4()}};
-        }
+        using Vektor2 = Vektor<2, T>;
+
+        if_size_in(3, 5, Vektor2) const &pos() const { return Vektor2::from(components); }
+        if_size_in(3, 5, Vektor2) & pos() { return Vektor2::from(components); }
+
+        if_size_in(3, 4, T) const &size() const { return v3(); }
+        if_size_in(3, 4, T) & size() { return v3(); }
+
+        if_size_in(4, 5, Vektor2) const &size() const { return Vektor2::from((T const *)(void const *)&components[2]); }
+        if_size_in(4, 5, Vektor2) & size() { return Vektor2::from((T *)(void *)&components[2]); }
+
+        /*
+         * 3D
+         */
+
+        using Vektor3 = Vektor<3, T>;
+
+        if_size_in(5, 7, Vektor2) const &pos() const { return Vektor3::from(components); }
+        if_size_in(5, 7, Vektor2) & pos() { return Vektor3::from(components); }
+
+        if_size_in(6, 7, Vektor2) const &size() const { return Vektor2::from((T const *)(void const *)&components[3]); }
+        if_size_in(6, 7, Vektor2) & size() { return Vektor2::from((T *)(void *)&components[3]); }
     };
 #undef if_size_ge
 

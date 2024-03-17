@@ -17,5 +17,15 @@ int main()
     std::cout << vec << std::endl;
     std::cout << vec.pos() << std::endl;
     std::cout << vec.size() << std::endl;
+    Vektor<4, int> &vec2 = vec;
+    auto &pos = vec2.pos();
+    auto &width = vec2.size().width();
+    pos.v1() *= 2;
+    pos.v2() *= 3;
+    width += 5;
+    std::cout << vec.pos() << std::endl;
+    std::cout << vec.size() << std::endl;
+    std::cout << vec2.pos() << std::endl;
+    std::cout << vec2.size() << std::endl;
     return 0;
 }
