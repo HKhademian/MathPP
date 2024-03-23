@@ -74,14 +74,14 @@ namespace MathPP
         constexpr auto const &subvec() const
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
-            return Vektor<DATA_TYPE, __S, STRIDE>::from(&at(__OFFSET));
+            return Vektor<DATA_TYPE, __S, stride>::from(&at(__OFFSET));
         }
 
         template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
         constexpr auto subvec()
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
-            return Vektor<DATA_TYPE, __S, STRIDE>::from(&at(__OFFSET));
+            return Vektor<DATA_TYPE, __S, stride>::from(&at(__OFFSET));
         }
 
 #define if_size_ge(___X, ___T)   \
