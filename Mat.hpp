@@ -207,8 +207,8 @@ namespace MathPP
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __T2, size_t __S2, size_t __STRIDE2>
     auto operator+(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
     {
-        constexpr const auto S = __S1 > __S2 ? __S2 : __S1;
-        Vektor<typename Types::MathOp<__T1, __T2>::plus, S, 0> ret;
+        constexpr const auto SIZE = std::min(__S1, __S2);
+        Vektor<typename Types::MathOp<__T1, __T2>::plus, SIZE, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) + rhs.at(i);
@@ -217,10 +217,10 @@ namespace MathPP
     }
 
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __T2, size_t __S2, size_t __STRIDE2>
-    auto operator-(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
+    constexpr auto operator-(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
     {
-        constexpr const auto S = __S1 > __S2 ? __S2 : __S1;
-        Vektor<typename Types::MathOp<__T1, __T2>::minus, S, 0> ret;
+        constexpr const auto SIZE = std::min(__S1, __S2);
+        Vektor<typename Types::MathOp<__T1, __T2>::minus, SIZE, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) - rhs.at(i);
@@ -229,7 +229,7 @@ namespace MathPP
     }
 
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    auto operator*(__V v, Vektor<__T1, __S1, __STRIDE1> const &rhs)
+    constexpr auto operator*(__V v, Vektor<__T1, __S1, __STRIDE1> const &rhs)
     {
         Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
@@ -240,7 +240,7 @@ namespace MathPP
     }
 
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    auto operator*(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
+    constexpr auto operator*(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
     {
         Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
@@ -251,7 +251,7 @@ namespace MathPP
     }
 
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    auto operator/(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
+    constexpr auto operator/(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
     {
         Vektor<typename Types::MathOp<__T1, __V>::division, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
@@ -262,7 +262,7 @@ namespace MathPP
     }
 
     template <typename __T1, size_t __S1, size_t __STRIDE1>
-    std::ostream &operator<<(std::ostream &os, Vektor<__T1, __S1, __STRIDE1> const &rhs)
+    constexpr std::ostream &operator<<(std::ostream &os, Vektor<__T1, __S1, __STRIDE1> const &rhs)
     {
         // os << "Vector<"
         //    << "size=" << rhs.SIZE << ","
@@ -280,7 +280,7 @@ namespace MathPP
     }
 
     template <typename __T, size_t __S, size_t __STRIDE>
-    std::istream &operator>>(std::istream &is, Vektor<__T, __S, __STRIDE> &rhs)
+    constexpr std::istream &operator>>(std::istream &is, Vektor<__T, __S, __STRIDE> &rhs)
     {
         for (auto i = 0; i < rhs.SIZE; ++i)
         {
