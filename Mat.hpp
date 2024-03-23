@@ -208,7 +208,7 @@ namespace MathPP
     auto operator+(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
     {
         constexpr const auto S = __S1 > __S2 ? __S2 : __S1;
-        Vektor<typename Types::Plus<__T1, __T2>::V, S, 0> ret;
+        Vektor<typename Types::MathOp<__T1, __T2>::plus, S, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) + rhs.at(i);
@@ -220,7 +220,7 @@ namespace MathPP
     auto operator-(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
     {
         constexpr const auto S = __S1 > __S2 ? __S2 : __S1;
-        Vektor<typename Types::Minus<__T1, __T2>::V, S, 0> ret;
+        Vektor<typename Types::MathOp<__T1, __T2>::minus, S, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) - rhs.at(i);
@@ -231,7 +231,7 @@ namespace MathPP
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
     auto operator*(__V v, Vektor<__T1, __S1, __STRIDE1> const &rhs)
     {
-        Vektor<typename Types::Multiply<__T1, __V>::V, __S1, 0> ret;
+        Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = v * rhs.at(i);
@@ -242,7 +242,7 @@ namespace MathPP
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
     auto operator*(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
     {
-        Vektor<typename Types::Multiply<__T1, __V>::V, __S1, 0> ret;
+        Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) * v;
@@ -253,7 +253,7 @@ namespace MathPP
     template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
     auto operator/(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
     {
-        Vektor<typename Types::Division<__T1, __V>::V, __S1, 0> ret;
+        Vektor<typename Types::MathOp<__T1, __V>::division, __S1, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) / v;

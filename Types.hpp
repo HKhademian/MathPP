@@ -3,55 +3,24 @@
 
 namespace Types
 {
-    using size_t = unsigned int;
+    // using size_t = unsigned int;
 
     template <typename T, typename U>
-    struct Plus
+    struct MathOp
     {
     private:
         static T t;
         static U u;
-        static typeof(t + u) v;
 
     public:
-        typedef typeof(v) V;
-    };
-
-    template <typename T, typename U>
-    struct Minus
-    {
-    private:
-        static T t;
-        static U u;
-        static typeof(t - u) v;
-
-    public:
-        typedef typeof(v) V;
-    };
-
-    template <typename T, typename U>
-    struct Multiply
-    {
-    private:
-        static T t;
-        static U u;
-        static typeof(t * u) v;
-
-    public:
-        typedef typeof(v) V;
-    };
-
-    template <typename T, typename U>
-    struct Division
-    {
-    private:
-        static T t;
-        static U u;
-        static typeof(t / u) v;
-
-    public:
-        using V = typeof(v);
-        // typedef typeof(v) V;
+        using plus = typeof(t + u);
+        using minus = typeof(t - u);
+        using multiply = typeof(t * u);
+        using division = typeof(t / u);
+        // typedef typeof(t % u) mod;
+        // typedef typeof(t ^ u) Xor;
+        // typedef typeof(t | u) Or;
+        // typedef typeof(t & u) And;
     };
 
     template <typename T, T V1, T V2, typename = void>
