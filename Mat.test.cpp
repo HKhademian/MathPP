@@ -5,29 +5,29 @@ using namespace MathPP;
 
 int main()
 {
-    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 0, 0>) << std::endl;
-    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 1, 0>) << std::endl;
-    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 10, 0>) << std::endl;
-    std::cout << sizeof(double) << ":" << sizeof(Vektor<double, 20, 0>) << std::endl;
-    std::cout << sizeof(float) << ":" << sizeof(Vektor<float, 30, 0>) << std::endl;
+    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 0>) << std::endl;
+    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 1>) << std::endl;
+    std::cout << sizeof(int) << ":" << sizeof(Vektor<int, 10>) << std::endl;
+    std::cout << sizeof(double) << ":" << sizeof(Vektor<double, 20>) << std::endl;
+    std::cout << sizeof(float) << ":" << sizeof(Vektor<float, 30>) << std::endl;
     std::cout << std::endl;
 
-    std::cout << "vek 10I zero :: " << Vektor<int, 10, 0>::one() << std::endl;
+    std::cout << "vek 10I zero :: " << Vektor<int, 10>::one() << std::endl;
     std::cout << "vek  2I zero :: " << Vektor2I<>::zero() << std::endl;
-    std::cout << "vek 10F size :: " << Vektor<float, 10, 0>::SIZE << std::endl;
+    std::cout << "vek 10F size :: " << Vektor<float, 10>::SIZE << std::endl;
     std::cout << std::endl;
 
-    auto vecA = Vektor<int, 2, 0>::from(new int[100]);
+    auto vecA = Vektor<int, 2>::from(new int[100]);
     std::cin >> vecA;
     std::cout << "vecA 2I from input : " << vecA << std::endl;
     std::cout << std::endl;
 
-    Vektor<int, 4, 0> vec;
+    Vektor<int, 4> vec;
     std::cin >> vec;
     std::cout << "vec 4I from input : " << vec << std::endl;
     std::cout << std::endl;
 
-    Vektor<int, 4, 0> &vecB = vec;
+    Vektor<int, 4> &vecB = vec;
     std::cout << "mul: " << vecB * 2 << "    " << sizeof(vecB * 2) << std::endl;
     std::cout << "mul: " << vecB * 2 << "    " << sizeof(vecB * 2L) << std::endl;
     std::cout << "mul: " << vecB * 2.1f << "    " << sizeof(vecB * 2.1f) << std::endl;
@@ -51,7 +51,7 @@ int main()
               << "plus: " << vecB + Vektor<short, 10>{3, 5, 7, 9, 1, 2, 3, 4, 5, 6} << std::endl
               << std::endl;
 
-    Vektor<int, 30, 0> vec30{
+    Vektor<int, 30> vec30{
         29, 28, 27, 26, 25, 24, 23, 22, 21, 20,
         19, 18, 17, 16, 15, 14, 13, 12, 11, 10,
         9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
@@ -60,7 +60,7 @@ int main()
 
     std::cout << std::endl;
     {
-        auto vec10 = vec30.subvec<10, 5, 0>();
+        auto vec10 = vec30.subvec<10, 5>();
         std::cout << "vec30       : " << vec30 << std::endl;
         std::cout << "vec10       : " << vec10 << std::endl;
         std::cout << "subvec 10   : " << vec10.subvec<10>() << std::endl;
