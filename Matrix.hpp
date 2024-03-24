@@ -71,12 +71,18 @@ namespace MathPP
             return ret;
         }
 
+        /*
+         * Access
+         */
 
-        TYPE const &get(size_t row, size_t col, TYPE const &def = 0) const
+        constexpr TYPE const &at(size_t row, size_t col) const { return elements[row * ROW_SKIP + col * COL_SKIP]; }
+        constexpr TYPE &at(size_t row, size_t col) { return elements[row * ROW_SKIP + col * COL_SKIP]; }
+
+        constexpr TYPE const &get(size_t row, size_t col, TYPE const &def = 0) const
         {
             return row < ROW_COUNT && col < COL_COUNT ? at(row, col) : def;
         }
-        TYPE &get(size_t row, size_t col, TYPE &def = 0)
+        constexpr TYPE &get(size_t row, size_t col, TYPE &def = 0)
         {
             return row < ROW_COUNT && col < COL_COUNT ? at(row, col) : def;
         }
@@ -87,7 +93,7 @@ namespace MathPP
 
         using Transposition = Matrix<ROW_COUNT, COL_COUNT, TYPE, 0, 0>;
 
-        auto trans() const
+        constexpr auto trans() const
         {
             Transposition ret;
             for (auto r = 0; r < ROW_COUNT; ++r)
@@ -104,7 +110,7 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    auto operator+(
+    constexpr auto operator+(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
     {
@@ -126,7 +132,7 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    auto operator-(
+    constexpr auto operator-(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
     {
@@ -148,7 +154,7 @@ namespace MathPP
     template <
         typename _DATA_TYPE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    auto operator*(
+    constexpr auto operator*(
         _DATA_TYPE1 const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
     {
@@ -170,7 +176,7 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         typename _DATA_TYPE2>
-    auto operator*(
+    constexpr auto operator*(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
         _DATA_TYPE2 const &rhs)
     {
@@ -192,7 +198,7 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         typename _DATA_TYPE2>
-    auto operator/(
+    constexpr auto operator/(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
         _DATA_TYPE2 const &rhs)
     {
@@ -214,7 +220,7 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0>>::type
+    constexpr typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0>>::type
     operator*(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
