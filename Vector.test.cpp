@@ -1,5 +1,6 @@
-#include "Vector.hpp"
 #include <iostream>
+#include "Vector.hpp"
+#include "Vector.iostream.hpp"
 
 using namespace MathPP;
 

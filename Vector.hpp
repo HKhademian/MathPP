@@ -1,6 +1,6 @@
 #pragma once
+#include <cstddef>
 #include "Types.hpp"
-#include <ostream>
 
 #ifndef MATHPP_DEFAULT_DATA_TYPE
 #define MATHPP_DEFAULT_DATA_TYPE float
@@ -209,7 +209,7 @@ namespace MathPP
     template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
     auto operator+(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
-        constexpr const auto SIZE = std::min(__S1, __S2);
+        constexpr const auto SIZE = __S1 <= __S2 ? __S1 : __S2;
         typedef typename MathOp<__T1, __T2>::plus type;
 
         Vektor<SIZE, type, 0> ret;
@@ -223,7 +223,7 @@ namespace MathPP
     template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
     constexpr auto operator-(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
-        constexpr const auto SIZE = std::min(__S1, __S2);
+        constexpr const auto SIZE = __S1 <= __S2 ? __S1 : __S2;
         typedef typename MathOp<__T1, __T2>::minus type;
 
         Vektor<SIZE, type, 0> ret;
@@ -268,34 +268,6 @@ namespace MathPP
             ret.at(i) = lhs.at(i) / v;
         }
         return ret;
-    }
-
-    template <size_t __S1, typename __T1, size_t __STRIDE1>
-    constexpr std::ostream &operator<<(std::ostream &os, Vektor<__S1, __T1, __STRIDE1> const &rhs)
-    {
-        // os << "Vector<"
-        //    << "size=" << rhs.SIZE << ","
-        //    << "STRIDE=" << rhs.STRIDE
-        //    << "> ";
-        os << "[";
-        for (auto i = 0; i < rhs.SIZE; ++i)
-        {
-            if (i)
-                os << ", ";
-            os << rhs.at(i);
-        }
-        os << "]";
-        return os;
-    }
-
-    template <size_t __S, typename __T, size_t __STRIDE>
-    constexpr std::istream &operator>>(std::istream &is, Vektor<__S, __T, __STRIDE> &rhs)
-    {
-        for (auto i = 0; i < rhs.SIZE; ++i)
-        {
-            is >> rhs.at(i);
-        }
-        return is;
     }
 
 }
