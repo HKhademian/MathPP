@@ -6,6 +6,9 @@
 #define MATHPP_DEFAULT_DATA_TYPE float
 #endif
 
+/// define this to prevent shape matrices ops (+ or -)
+// #define MATHPP_NO_DIFF_SHAPE_OP
+
 namespace MathPP
 {
     /** Matrix */
@@ -110,9 +113,15 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    constexpr auto operator+(
-        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
-        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+    constexpr
+#ifdef MATHPP_NO_DIFF_SHAPE_OP
+        typename std::enable_if<_COLS1 == _COLS2 && _ROWS1 == _ROWS2, Matrix<_COLS1, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus, 0, 0>>::type
+#else
+        auto
+#endif
+        operator+(
+            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
+            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1 > _COLS2 ? _COLS1 : _COLS2;
         constexpr const auto ROW_COUNT = _ROWS1 > _ROWS2 ? _ROWS1 : _ROWS2;
@@ -132,9 +141,15 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
-    constexpr auto operator-(
-        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
-        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+    constexpr
+#ifdef MATHPP_NO_DIFF_SHAPE_OP
+        typename std::enable_if<_COLS1 == _COLS2 && _ROWS1 == _ROWS2, Matrix<_COLS1, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus, 0, 0>>::type
+#else
+        auto
+#endif
+        operator-(
+            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
+            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1 > _COLS2 ? _COLS1 : _COLS2;
         constexpr const auto ROW_COUNT = _ROWS1 > _ROWS2 ? _ROWS1 : _ROWS2;
