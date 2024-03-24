@@ -89,6 +89,15 @@ int main()
         std::cout << std::endl;
     }
 
+    auto mat1trans = mat1.trans();
+    /*test9*/ {
+        auto &mat = mat1trans;
+        std::cout << "mat1 trans : cols= " << mat.COL_COUNT << std::endl;
+        std::cout << "mat1 trans : rows= " << mat.ROW_COUNT << std::endl;
+        std::cout << "mat1 trans : " << mat << std::endl;
+        printMat(mat);
+        std::cout << "mat1       : " << mat1 << std::endl;
+        printMat(mat1);
         std::cout << std::endl;
     }
 

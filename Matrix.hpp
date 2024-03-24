@@ -50,6 +50,25 @@ namespace MathPP
         {
             return row < ROW_COUNT && col < COL_COUNT ? at(row, col) : def;
         }
+
+        /*
+         * Transposition
+         */
+
+        using Transposition = Matrix<ROW_COUNT, COL_COUNT, TYPE, 0, 0>;
+
+        auto trans() const
+        {
+            Transposition ret;
+            for (auto r = 0; r < ROW_COUNT; ++r)
+            {
+                for (auto c = 0; c < COL_COUNT; ++c)
+                {
+                    ret.at(c, r) = at(r, c);
+                }
+            }
+            return ret;
+        }
     };
 
     template <
