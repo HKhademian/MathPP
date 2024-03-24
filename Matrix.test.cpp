@@ -4,6 +4,19 @@
 
 using namespace MathPP;
 
+template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SPACE, size_t _ROW_SPACE>
+void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SPACE, _ROW_SPACE> const &mat)
+{
+    for (auto r = 0; r < mat.ROW_COUNT; ++r)
+    {
+        for (auto c = 0; c < mat.COL_COUNT; ++c)
+        {
+            std::cout << mat.at(r, c) << '\t';
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main()
 {
     Matrix<3, 4, int> mat1{101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
@@ -12,6 +25,7 @@ int main()
     /*test1*/ {
         std::cout << "float size: " << sizeof(float) << std::endl;
         std::cout << "mat1 float 3x4 size: " << sizeof(mat1) << std::endl;
+        printMat(mat1);
         std::cout << std::endl;
     }
 
@@ -25,15 +39,8 @@ int main()
         auto mat = mat1 + mat2;
         std::cout << "mat1+mat2 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "mat1+mat2 : rows= " << mat.ROW_COUNT << std::endl;
-        for (auto r = 0; r < mat.ROW_COUNT; ++r)
-        {
-            for (auto c = 0; c < mat.COL_COUNT; ++c)
-            {
-                std::cout << mat.at(r, c) << '\t';
-            }
-            std::cout << std::endl;
-        }
         std::cout << "mat1+mat2 : " << mat << std::endl;
+        printMat(mat);
         std::cout << std::endl;
     }
 
@@ -41,14 +48,7 @@ int main()
         auto mat = mat2 - mat1;
         std::cout << "mat2-mat1 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "mat2-mat1 : rows= " << mat.ROW_COUNT << std::endl;
-        for (auto r = 0; r < mat.ROW_COUNT; ++r)
-        {
-            for (auto c = 0; c < mat.COL_COUNT; ++c)
-            {
-                std::cout << mat.at(r, c) << '\t';
-            }
-            std::cout << std::endl;
-        }
+        printMat(mat);
         std::cout << "mat2-mat1 : " << mat << std::endl;
         std::cout << std::endl;
     }
@@ -58,6 +58,7 @@ int main()
         std::cout << "3 * mat1 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "3 * mat1 : rows= " << mat.ROW_COUNT << std::endl;
         std::cout << "3 * mat1 : " << mat << std::endl;
+        printMat(mat);
         std::cout << std::endl;
     }
 
@@ -66,6 +67,7 @@ int main()
         std::cout << "mat1 * 2.5 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "mat1 * 2.5 : rows= " << mat.ROW_COUNT << std::endl;
         std::cout << "mat1 * 2.5 : " << mat << std::endl;
+        printMat(mat);
         std::cout << std::endl;
     }
 
@@ -74,6 +76,7 @@ int main()
         std::cout << "mat1 / 7 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "mat1 / 7 : rows= " << mat.ROW_COUNT << std::endl;
         std::cout << "mat1 / 7 : " << mat << std::endl;
+        printMat(mat);
         std::cout << std::endl;
     }
 
@@ -82,6 +85,10 @@ int main()
         std::cout << "mat1 / 1.1 : cols= " << mat.COL_COUNT << std::endl;
         std::cout << "mat1 / 1.1 : rows= " << mat.ROW_COUNT << std::endl;
         std::cout << "mat1 / 1.1 : " << mat << std::endl;
+        printMat(mat);
+        std::cout << std::endl;
+    }
+
         std::cout << std::endl;
     }
 
