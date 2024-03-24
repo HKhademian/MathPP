@@ -39,8 +39,38 @@ namespace MathPP
         TYPE elements[ROW_COUNT * ROW_SIZE +
                       ROW_SPACE_COUNT * ROW_SPACE_SIZE] = {0};
 
-        TYPE const &at(size_t row, size_t col) const { return elements[row * ROW_SKIP + col * COL_SKIP]; }
-        TYPE &at(size_t row, size_t col) { return elements[row * ROW_SKIP + col * COL_SKIP]; }
+        /*
+         * Instance
+         */
+
+        constexpr static auto ofAll(TYPE const &value)
+        {
+            this_t ret;
+            for (auto r = 0; r < ret.ROW_COUNT; ++r)
+            {
+                for (auto c = 0; c < ret.COL_COUNT; ++c)
+                {
+                    ret.at(r, c) = value;
+                }
+            }
+            return ret;
+        }
+
+        constexpr static this_t zeros() { return ofAll(0); }
+        constexpr static this_t ones() { return ofAll(1); }
+
+        template <size_t C_COUNT = COL_COUNT>
+        constexpr static typename std::enable_if<C_COUNT == COL_COUNT && C_COUNT == ROW_COUNT, this_t>::type
+        identity(TYPE const &value = 1)
+        {
+            auto ret = zeros();
+            for (auto rc = 0; rc < ret.ROW_COUNT; ++rc)
+            {
+                ret.at(rc, rc) = value;
+            }
+            return ret;
+        }
+
 
         TYPE const &get(size_t row, size_t col, TYPE const &def = 0) const
         {

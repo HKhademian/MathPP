@@ -139,5 +139,15 @@ int main()
         std::cout << std::endl;
     }
 
+    /*test13*/ {
+        std::cout << "Matrix<2, 3>.zeros() = " << Matrix<2, 3>::zeros() << std::endl;
+        std::cout << "Matrix<2, 3>.ones() = " << Matrix<2, 3>::ones() << std::endl;
+        // std::cout << "Matrix<2, 3>.identity() = " << Matrix<2, 3>::identity() << std::endl;
+        std::cout << "Matrix<3, 3>.identity() = " << Matrix<3, 3>::identity() << std::endl;
+        std::cout << "Matrix<2, 2>.identity(5) = " << Matrix<2, 2>::identity(5) << std::endl;
+        std::cout << "Matrix<5, 5>.identity(2).trans() = " << Matrix<5, 5>::identity(2).trans() << std::endl;
+        std::cout << std::endl;
+    }
+
     return 0;
 }
