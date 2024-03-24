@@ -52,8 +52,8 @@ namespace MathPP
             return ret;
         }
 
-        constexpr static auto zero() { return ofAll(0); }
-        constexpr static auto one() { return ofAll(1); }
+        constexpr static auto zeros() { return ofAll(0); }
+        constexpr static auto ones() { return ofAll(1); }
 
         /*
          * access

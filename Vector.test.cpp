@@ -13,9 +13,9 @@ int main()
     std::cout << sizeof(float) << ":" << sizeof(Vektor<30, float>) << std::endl;
     std::cout << std::endl;
 
-    std::cout << "vek 10I zero :: " << Vektor<10, int>::one() << std::endl;
-    std::cout << "vek  2I zero :: " << Vektor2I<>::zero() << std::endl;
-    std::cout << "vek 10F size :: " << Vektor<10, float>::SIZE << std::endl;
+    std::cout << "vek 10I ones  :: " << Vektor<10, int>::ones() << std::endl;
+    std::cout << "vek  2I zeros :: " << Vektor2I<>::zeros() << std::endl;
+    std::cout << "vek 10F size  :: " << Vektor<10, float>::SIZE << std::endl;
     std::cout << std::endl;
 
     auto vecA = Vektor<2, int>::from(new int[100]);
