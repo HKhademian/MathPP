@@ -181,4 +181,29 @@ namespace MathPP
         return ret;
     }
 
+    template <
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
+        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
+    typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0>>::type
+    operator*(
+        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
+        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+    {
+        constexpr const auto MID_SIZE = _COLS1; // _ROWS2
+        Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0> ret;
+        for (auto r = 0; r < ret.ROW_COUNT; ++r)
+        {
+            for (auto c = 0; c < ret.COL_COUNT; ++c)
+            {
+                typename decltype(ret)::TYPE v = 0;
+                for (auto i = 0; i < MID_SIZE; ++i)
+                {
+                    v += lhs.at(r, i) * rhs.at(i, c);
+                }
+                ret.at(r, c) = v;
+            }
+        }
+        return ret;
+    }
+
 }

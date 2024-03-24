@@ -101,5 +101,43 @@ int main()
         std::cout << std::endl;
     }
 
+    /*test10*/ {
+        auto mat = mat1 * mat1trans;
+        std::cout << "mat1 * trans : cols= " << mat.COL_COUNT << std::endl;
+        std::cout << "mat1 * trans : rows= " << mat.ROW_COUNT << std::endl;
+        std::cout << "mat1 * trans : " << mat << std::endl;
+        printMat(mat);
+        std::cout << std::endl;
+    }
+
+    /*test11*/ {
+        Matrix<2, 3> matA{10, 20, 30, 40, 50, 60};
+        Matrix<3, 2> matB{1, 2, 3, 4, 5, 6};
+        auto matAB = matA * matB;
+        auto matBA = matB * matA;
+        std::cout << "matA : " << matA << std::endl;
+        printMat(matA);
+        std::cout << "matB : " << matB << std::endl;
+        printMat(matB);
+        std::cout << "matAB : cols= " << matAB.COL_COUNT << std::endl;
+        std::cout << "matAB : rows= " << matAB.ROW_COUNT << std::endl;
+        std::cout << "matAB : " << matAB << std::endl;
+        printMat(matAB);
+        std::cout << "matBA : cols= " << matBA.COL_COUNT << std::endl;
+        std::cout << "matBA : rows= " << matBA.ROW_COUNT << std::endl;
+        std::cout << "matBA : " << matBA << std::endl;
+        printMat(matBA);
+        std::cout << std::endl;
+    }
+
+    /*test12*/ {
+        Matrix<2, 3> matA;
+        Matrix<5, 3> matB;
+        //// uncomment to get COMPILE TIME ERROR !
+        // auto matAB = matA * matB;
+        // auto matBA = matB * matA;
+        std::cout << std::endl;
+    }
+
     return 0;
 }
