@@ -2,21 +2,36 @@
 #include "Types.hpp"
 #include <ostream>
 
+#ifndef MATHPP_DEFAULT_DATA_TYPE
+#define MATHPP_DEFAULT_DATA_TYPE float
+#endif
+
 namespace MathPP
 {
-    template <typename _DATA_TYPE, size_t _SIZE, size_t _STRIDE = 0>
+
+    /*
+     * STRIDE
+     * 99  98  97  96  95  94  93  92  91  90  89  88  87  86  85  84  83  82  81  80
+     * 99      97      95      93      91      89      87      85      83      81
+     * 99              95              91              87              83
+     */
+
+    template <size_t _SIZE, typename _DATA_TYPE = MATHPP_DEFAULT_DATA_TYPE, size_t _STRIDE = 0>
     struct Vektor
     {
+    public:
         static constexpr const auto SIZE = _SIZE;
         static constexpr const auto STRIDE = _STRIDE;
         using DATA_TYPE = _DATA_TYPE;
         using MEM_TYPE = DATA_TYPE[SIZE * (STRIDE + 1)];
-
-    private:
-        using this_t = Vektor<DATA_TYPE, SIZE, STRIDE>;
+        using this_t = Vektor<SIZE, DATA_TYPE, STRIDE>;
 
     public:
         MEM_TYPE memory;
+
+        /*
+         * INSTANCE
+         */
 
         constexpr static this_t const &from(DATA_TYPE const *memory)
         {
@@ -37,15 +52,8 @@ namespace MathPP
             return ret;
         }
 
-        constexpr static auto zero()
-        {
-            return ofAll(0);
-        }
-
-        constexpr static auto one()
-        {
-            return ofAll(1);
-        }
+        constexpr static auto zero() { return ofAll(0); }
+        constexpr static auto one() { return ofAll(1); }
 
         /*
          * access
@@ -64,24 +72,18 @@ namespace MathPP
          * conversion
          */
 
-        /*
-        99  98  97  96  95  94  93  92  91  90  89  88  87  86  85  84  83  82  81  80
-        99      97      95      93      91      89      87      85      83      81
-        99              95              91              87              83
-        */
-
         template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
         constexpr auto const &subvec() const
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
-            return Vektor<DATA_TYPE, __S, stride>::from(&at(__OFFSET));
+            return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
         }
 
         template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
         constexpr auto subvec()
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
-            return Vektor<DATA_TYPE, __S, stride>::from(&at(__OFFSET));
+            return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
         }
 
 #define if_size_ge(___X, ___T)   \
@@ -185,30 +187,32 @@ namespace MathPP
 #undef if_size_in
     };
 
-    template <typename T, size_t __STRIDE = 0>
-    using Vektor2 = Vektor<T, 2, __STRIDE>;
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    using Vektor2 = Vektor<2, T, __STRIDE>;
 
-    template <typename T, size_t __STRIDE = 0>
-    using Vektor3 = Vektor<T, 3, __STRIDE>;
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    using Vektor3 = Vektor<3, T, __STRIDE>;
 
-    template <typename T, size_t __STRIDE = 0>
-    using Vektor4 = Vektor<T, 4, __STRIDE>;
-
-    template <size_t __STRIDE = 0>
-    using Vektor2S = Vektor<signed int, 2, __STRIDE>;
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    using Vektor4 = Vektor<4, T, __STRIDE>;
 
     template <size_t __STRIDE = 0>
-    using Vektor2I = Vektor<unsigned int, 2, __STRIDE>;
+    using Vektor2S = Vektor2<signed int, __STRIDE>;
+
+    template <size_t __STRIDE = 0>
+    using Vektor2I = Vektor2<unsigned int, __STRIDE>;
 
     /*
      * Operators
      */
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1, typename __T2, size_t __S2, size_t __STRIDE2>
-    auto operator+(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
+    template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
+    auto operator+(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
         constexpr const auto SIZE = std::min(__S1, __S2);
-        Vektor<typename Types::MathOp<__T1, __T2>::plus, SIZE, 0> ret;
+        typedef typename MathOp<__T1, __T2>::plus type;
+
+        Vektor<SIZE, type, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) + rhs.at(i);
@@ -216,11 +220,13 @@ namespace MathPP
         return ret;
     }
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1, typename __T2, size_t __S2, size_t __STRIDE2>
-    constexpr auto operator-(Vektor<__T1, __S1, __STRIDE1> const &lhs, Vektor<__T2, __S2, __STRIDE2> const &rhs)
+    template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
+    constexpr auto operator-(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
         constexpr const auto SIZE = std::min(__S1, __S2);
-        Vektor<typename Types::MathOp<__T1, __T2>::minus, SIZE, 0> ret;
+        typedef typename MathOp<__T1, __T2>::minus type;
+
+        Vektor<SIZE, type, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) - rhs.at(i);
@@ -228,10 +234,11 @@ namespace MathPP
         return ret;
     }
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    constexpr auto operator*(__V v, Vektor<__T1, __S1, __STRIDE1> const &rhs)
+    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    constexpr auto operator*(__V v, Vektor<__S1, __T1, __STRIDE1> const &rhs)
     {
-        Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
+        typedef typename MathOp<__T1, __V>::multiply type;
+        Vektor<__S1, type, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = v * rhs.at(i);
@@ -239,10 +246,11 @@ namespace MathPP
         return ret;
     }
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    constexpr auto operator*(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
+    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    constexpr auto operator*(Vektor<__S1, __T1, __STRIDE1> const &lhs, __V v)
     {
-        Vektor<typename Types::MathOp<__T1, __V>::multiply, __S1, 0> ret;
+        typedef typename MathOp<__T1, __V>::multiply type;
+        Vektor<__S1, type, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) * v;
@@ -250,10 +258,11 @@ namespace MathPP
         return ret;
     }
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1, typename __V>
-    constexpr auto operator/(Vektor<__T1, __S1, __STRIDE1> const &lhs, __V v)
+    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    constexpr auto operator/(Vektor<__S1, __T1, __STRIDE1> const &lhs, __V v)
     {
-        Vektor<typename Types::MathOp<__T1, __V>::division, __S1, 0> ret;
+        typedef typename MathOp<__T1, __V>::division type;
+        Vektor<__S1, type, 0> ret;
         for (auto i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) / v;
@@ -261,8 +270,8 @@ namespace MathPP
         return ret;
     }
 
-    template <typename __T1, size_t __S1, size_t __STRIDE1>
-    constexpr std::ostream &operator<<(std::ostream &os, Vektor<__T1, __S1, __STRIDE1> const &rhs)
+    template <size_t __S1, typename __T1, size_t __STRIDE1>
+    constexpr std::ostream &operator<<(std::ostream &os, Vektor<__S1, __T1, __STRIDE1> const &rhs)
     {
         // os << "Vector<"
         //    << "size=" << rhs.SIZE << ","
@@ -279,8 +288,8 @@ namespace MathPP
         return os;
     }
 
-    template <typename __T, size_t __S, size_t __STRIDE>
-    constexpr std::istream &operator>>(std::istream &is, Vektor<__T, __S, __STRIDE> &rhs)
+    template <size_t __S, typename __T, size_t __STRIDE>
+    constexpr std::istream &operator>>(std::istream &is, Vektor<__S, __T, __STRIDE> &rhs)
     {
         for (auto i = 0; i < rhs.SIZE; ++i)
         {
@@ -288,29 +297,5 @@ namespace MathPP
         }
         return is;
     }
-
-}
-
-namespace MathPP
-{
-
-    template <typename _DATA_TYPE, size_t _R, size_t _C, size_t _STRIDE>
-    struct Matrix;
-
-    template <typename _DATA_TYPE, size_t _R, size_t _C, size_t _STRIDE>
-    struct Matrix
-    {
-        // TODO apply _STRIDE
-        _DATA_TYPE elements[_R * _C] = {0};
-
-        using this_t = Matrix<_DATA_TYPE, _R, _C, _STRIDE>;
-        using ROW_SIZE = std::integral_constant<size_t, _R>;
-        using COL_SIZE = std::integral_constant<size_t, _C>;
-        using SIZE = std::integral_constant<size_t, _R * _C>;
-        using TYPE = _DATA_TYPE;
-
-        _DATA_TYPE const &at(size_t row, size_t col) const { return elements[row * _C + col]; }
-        _DATA_TYPE &at(size_t row, size_t col) { return elements[row * _C + col]; }
-    };
 
 }
