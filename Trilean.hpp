@@ -29,6 +29,7 @@ namespace MathPP
 
     public:
         constexpr Trilean() : value(0){};
+        constexpr Trilean(Trilean const &value) : value(value.value){};
         explicit constexpr Trilean(bool value) : value(sign(value)){};
         explicit constexpr Trilean(char value) : value(sign(value)){};
         explicit constexpr Trilean(signed char value) : value(sign(value)){};
@@ -55,7 +56,14 @@ namespace MathPP
         explicit constexpr inline operator float() const { return value; }
         explicit constexpr inline operator double() const { return value; }
         explicit constexpr inline operator long double() const { return value; }
-    };
+
+    public:
+        constexpr inline auto &operator=(Trilean const &rhs)
+        {
+            value = rhs.value;
+            return *this;
+        }
+        };
 
     constexpr static const auto NEG = Trilean::NEG();
     constexpr static const auto ZER = Trilean::ZER();
