@@ -9,8 +9,9 @@
 /// define this to prevent shape matrices ops (+ or -)
 // #define MATHPP_NO_DIFF_SHAPE_OP
 
-#define MATHPP_MAT_LOOP_ROW(MAT, R) for (auto R = 0; R < MAT.ROW_COUNT; ++R)
-#define MATHPP_MAT_LOOP_COL(MAT, C) for (auto C = 0; C < MAT.COL_COUNT; ++C)
+#define MATHPP_LOOP(LAST, V) for (auto V = 0; V < LAST; ++V)
+#define MATHPP_MAT_LOOP_ROW(MAT, R) MATHPP_LOOP(MAT.ROW_COUNT, R)
+#define MATHPP_MAT_LOOP_COL(MAT, C) MATHPP_LOOP(MAT.COL_COUNT, C)
 #define MATHPP_MAT_LOOP(MAT, R, C) \
     MATHPP_MAT_LOOP_ROW(MAT, R)    \
     MATHPP_MAT_LOOP_COL(MAT, C)
@@ -39,6 +40,8 @@ namespace MathPP
         constexpr static const auto ROW_SKIP_SIZE = _ROW_SKIP;
         using this_t = Matrix<COL_COUNT, ROW_COUNT, TYPE, COL_SKIP_SIZE, ROW_SKIP_SIZE>;
 
+        constexpr static const bool isSquare = (COL_COUNT == ROW_COUNT);
+
     private:
         constexpr static const auto COL_SKIP_COUNT = COL_COUNT > 0 ? COL_COUNT - 1 : 0;
         constexpr static const auto ROW_SKIP_COUNT = ROW_COUNT > 0 ? ROW_COUNT - 1 : 0;
@@ -54,13 +57,17 @@ namespace MathPP
          * Instance
          */
 
+        constexpr static auto ofAll(TYPE const &&value)
+        {
+            this_t ret;
+            MATHPP_MAT_LOOP(ret, r, c) { ret.at(r, c) = value; }
+            return ret;
+        }
+
         constexpr static auto ofAll(TYPE const &value)
         {
             this_t ret;
-            MATHPP_MAT_LOOP(ret, r, c)
-            {
-                ret.at(r, c) = value;
-            }
+            MATHPP_MAT_LOOP(ret, r, c) { ret.at(r, c) = value; }
             return ret;
         }
 
@@ -72,10 +79,7 @@ namespace MathPP
         identity(TYPE const &value = 1)
         {
             auto ret = zeros();
-            MATHPP_MAT_LOOP_ROW(ret, rc)
-            {
-                ret.at(rc, rc) = value;
-            }
+            MATHPP_MAT_LOOP_ROW(ret, rc) { ret.at(rc, rc) = value; }
             return ret;
         }
 
@@ -104,10 +108,7 @@ namespace MathPP
         constexpr auto trans() const
         {
             Transposition ret;
-            MATHPP_MAT_LOOP(ret, r, c)
-            {
-                ret.at(r, c) = at(c, r);
-            }
+            MATHPP_MAT_LOOP(ret, r, c) { ret.at(r, c) = at(c, r); }
             return ret;
         }
     };
@@ -232,7 +233,7 @@ namespace MathPP
         MATHPP_MAT_LOOP(ret, r, c)
         {
             typename decltype(ret)::TYPE v = 0;
-            for (auto i = 0; i < MID_SIZE; ++i)
+            MATHPP_LOOP(MID_SIZE, i)
             {
                 v += lhs.at(r, i) * rhs.at(i, c);
             }
