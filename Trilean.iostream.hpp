@@ -7,7 +7,13 @@ namespace MathPP
 {
     std::ostream &operator<<(std::ostream &os, Trilean const &rhs)
     {
-        os << std::right << std::setw(2) << int(rhs);
+        if (rhs == NEG)
+            os << "NEG";
+        else if (rhs == ZER)
+            os << "ZER";
+        else if (rhs == POS)
+            os << "POS";
+        // os << std::right << std::setw(2) << int(rhs);
         return os;
     }
 
