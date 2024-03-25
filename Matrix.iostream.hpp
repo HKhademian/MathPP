@@ -32,10 +32,10 @@ namespace MathPP
     template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SPACE, size_t _ROW_SPACE>
     constexpr std::istream &operator>>(std::istream &is, Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SPACE, _ROW_SPACE> &rhs)
     {
-        // for (auto i = 0; i < rhs.SIZE; ++i)
-        // {
-        //     is >> rhs.at(i);
-        // }
+        MATHPP_MAT_LOOP(rhs, r, c)
+        {
+            is >> rhs.at(r, c);
+        }
         return is;
     }
 }
