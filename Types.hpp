@@ -5,6 +5,24 @@ namespace MathPP
 {
     // using size_t = unsigned int;
 
+    template <typename T>
+    constexpr char sign(T value)
+    {
+        if (value == 0)
+            return 0;
+        else if (value < 0)
+            return -1;
+        return +1;
+    };
+
+    template <>
+    constexpr char sign<bool>(bool value)
+    {
+        if (value)
+            return +1;
+        return 0;
+    };
+
     template <typename T, typename U>
     struct MathOp
     {

@@ -4,16 +4,6 @@
 
 namespace MathPP
 {
-    template <typename T>
-    constexpr char sign(T value)
-    {
-        if (value == 0)
-            return 0;
-        else if (value < 0)
-            return -1;
-        return +1;
-    };
-
     struct Trilean;
 
     struct Trilean
@@ -39,6 +29,7 @@ namespace MathPP
 
     public:
         constexpr Trilean() : value(0){};
+        explicit constexpr Trilean(bool value) : value(sign(value)){};
         explicit constexpr Trilean(char value) : value(sign(value)){};
         explicit constexpr Trilean(signed char value) : value(sign(value)){};
         explicit constexpr Trilean(signed short value) : value(sign(value)){};
@@ -53,6 +44,8 @@ namespace MathPP
         constexpr inline bool operator==(Trilean rhs) const { return rhs.value == value; }
         constexpr inline bool operator!=(Trilean rhs) const { return rhs.value != value; }
 
+        /** TODO: is this ok? */
+        explicit constexpr inline operator bool() const { return value >= 0; }
         explicit constexpr inline operator char() const { return value; }
         explicit constexpr inline operator signed char() const { return value; }
         explicit constexpr inline operator signed short() const { return value; }
