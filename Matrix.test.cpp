@@ -1,3 +1,5 @@
+/// clear && gcc -o matrix.out Matrix.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./matrix.out | tee ./Matrix.test.out && rm ./matrix.out
+
 #include <iostream>
 #include "Matrix.hpp"
 #include "Matrix.iostream.hpp"
