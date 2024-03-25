@@ -1,3 +1,5 @@
+/// clear && gcc -o vector.out Vector.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./vector.out | tee ./vector.test.out && rm ./vector.out
+
 #include <iostream>
 #include "Vector.hpp"
 #include "Vector.iostream.hpp"
