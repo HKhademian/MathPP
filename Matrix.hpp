@@ -51,7 +51,7 @@ namespace MathPP
         constexpr static const auto ROW_SKIP = ROW_SIZE + ROW_SKIP_SIZE;
 
     public:
-        TYPE elements[(ROW_COUNT * ROW_SIZE) + (ROW_SKIP_COUNT * ROW_SKIP_SIZE)] = {0};
+        TYPE elements[(ROW_COUNT * ROW_SIZE) + (ROW_SKIP_COUNT * ROW_SKIP_SIZE)] = {TYPE(0)};
 
         /*
          * Instance
@@ -71,12 +71,12 @@ namespace MathPP
             return ret;
         }
 
-        constexpr static this_t zeros() { return ofAll(0); }
-        constexpr static this_t ones() { return ofAll(1); }
+        constexpr static this_t zeros() { return ofAll(TYPE(0)); }
+        constexpr static this_t ones() { return ofAll(TYPE(1)); }
 
         template <size_t C_COUNT = COL_COUNT>
         constexpr static typename std::enable_if<C_COUNT == COL_COUNT && C_COUNT == ROW_COUNT, this_t>::type
-        identity(TYPE const &value = 1)
+        identity(TYPE const &value = TYPE(1))
         {
             auto ret = zeros();
             MATHPP_MAT_LOOP_ROW(ret, rc) { ret.at(rc, rc) = value; }
@@ -90,11 +90,11 @@ namespace MathPP
         constexpr TYPE const &at(size_t row, size_t col) const { return elements[row * ROW_SKIP + col * COL_SKIP]; }
         constexpr TYPE &at(size_t row, size_t col) { return elements[row * ROW_SKIP + col * COL_SKIP]; }
 
-        constexpr TYPE const &get(size_t row, size_t col, TYPE const &def = 0) const
+        constexpr TYPE const &get(size_t row, size_t col, TYPE const &def = TYPE(0)) const
         {
             return row < ROW_COUNT && col < COL_COUNT ? at(row, col) : def;
         }
-        constexpr TYPE &get(size_t row, size_t col, TYPE &def = 0)
+        constexpr TYPE &get(size_t row, size_t col, TYPE &def = TYPE(0))
         {
             return row < ROW_COUNT && col < COL_COUNT ? at(row, col) : def;
         }
@@ -223,19 +223,26 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
-    constexpr typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0>>::type
+    constexpr typename std::enable_if<_COLS1 == _ROWS2,
+                                      Matrix<_COLS2, _ROWS1,
+                                             typename MathOp<
+                                                 typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply,
+                                                 typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply>::plus,
+                                             0, 0>>::type
     operator*(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
+        typedef typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply MULT_DATA_TYPE;
+        typedef typename MathOp<MULT_DATA_TYPE, MULT_DATA_TYPE>::plus RET_DATA_TYPE;
         constexpr const auto MID_SIZE = _COLS1; // _ROWS2
-        Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0> ret;
+        Matrix<_COLS2, _ROWS1, RET_DATA_TYPE, 0, 0> ret;
         MATHPP_MAT_LOOP(ret, r, c)
         {
-            typename decltype(ret)::TYPE v = 0;
+            typename decltype(ret)::TYPE v = RET_DATA_TYPE(0);
             MATHPP_LOOP(MID_SIZE, i)
             {
-                v += lhs.at(r, i) * rhs.at(i, c);
+                v = v + RET_DATA_TYPE(lhs.at(r, i) * rhs.at(i, c));
             }
             ret.at(r, c) = v;
         }
