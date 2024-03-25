@@ -10,9 +10,18 @@ int main()
 {
 
     /*test1*/ {
+        std::cout << "sizeof(Trilean): " << sizeof(Trilean) << std::endl;
+        std::cout << std::endl;
+
         std::cout << "NEG: " << NEG << std::endl;
         std::cout << "ZER: " << ZER << std::endl;
         std::cout << "POS: " << POS << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "int(NEG): " << int(NEG) << std::endl;
+        std::cout << "int(ZER): " << int(ZER) << std::endl;
+        std::cout << "int(POS): " << int(POS) << std::endl;
+
         std::cout << std::endl;
     }
 
@@ -124,6 +133,19 @@ int main()
         std::cout << "POS - NEG: " << (POS - NEG) << std::endl;
         std::cout << "POS - ZER: " << (POS - ZER) << std::endl;
         std::cout << "POS - POS: " << (POS - POS) << std::endl;
+        std::cout << std::endl;
+    }
+
+    /*test3: math*/ {
+        std::cout << "10 * NEG: " << (10 * NEG) << std::endl;
+        std::cout << "10 * ZER: " << (10 * ZER) << std::endl;
+        std::cout << "10 * POS: " << (10 * POS) << std::endl;
+        std::cout << "NEG / 5 : " << (NEG / 5) << std::endl;
+        std::cout << "ZER / 5 : " << (ZER / 5) << std::endl;
+        std::cout << "POS / 5 : " << (POS / 5) << std::endl;
+        std::cout << "NEG * 3 : " << (NEG * 3) << std::endl;
+        std::cout << "ZER * 3 : " << (ZER * 3) << std::endl;
+        std::cout << "POS * 3 : " << (POS * 3) << std::endl;
         std::cout << std::endl;
     }
 

@@ -1,6 +1,12 @@
+sizeof(Trilean): 4
+
 NEG: -1
 ZER:  0
 POS:  1
+
+int(NEG): -1
+int(ZER): 0
+int(POS): 1
 
 ! NEG:  1
 ! ZER:  0
@@ -85,4 +91,14 @@ ZER - POS: -1
 POS - NEG: 2
 POS - ZER: 1
 POS - POS: 0
+
+10 * NEG: -10
+10 * ZER: 0
+10 * POS: 10
+NEG / 5 : 0
+ZER / 5 : 0
+POS / 5 : 0
+NEG * 3 : -3
+ZER * 3 : 0
+POS * 3 : 3
 
