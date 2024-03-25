@@ -12,12 +12,12 @@ namespace MathPP
         //    << "STRIDE=" << rhs.STRIDE
         //    << "> ";
         os << "[";
-        for (auto r = 0; r < rhs.ROW_COUNT; ++r)
+        MATHPP_MAT_LOOP_ROW(rhs, r)
         {
             if (r)
                 os << ", ";
             os << "[";
-            for (auto c = 0; c < rhs.COL_COUNT; ++c)
+            MATHPP_MAT_LOOP_COL(rhs, c)
             {
                 if (c)
                     os << ", ";

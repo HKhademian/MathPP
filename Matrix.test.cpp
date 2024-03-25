@@ -9,9 +9,9 @@ using namespace MathPP;
 template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SKIP, size_t _ROW_SKIP>
 void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SKIP, _ROW_SKIP> const &mat)
 {
-    for (auto r = 0; r < mat.ROW_COUNT; ++r)
+    MATHPP_MAT_LOOP_ROW(mat, r)
     {
-        for (auto c = 0; c < mat.COL_COUNT; ++c)
+        MATHPP_MAT_LOOP_COL(mat, c)
         {
             std::cout << mat.at(r, c) << '\t';
         }

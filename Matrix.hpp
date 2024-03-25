@@ -9,9 +9,11 @@
 /// define this to prevent shape matrices ops (+ or -)
 // #define MATHPP_NO_DIFF_SHAPE_OP
 
-#define MATHPP_MAT_LOOP(MAT, R, C)           \
-    for (auto R = 0; R < MAT.ROW_COUNT; ++R) \
-        for (auto C = 0; C < MAT.COL_COUNT; ++C)
+#define MATHPP_MAT_LOOP_ROW(MAT, R) for (auto R = 0; R < MAT.ROW_COUNT; ++R)
+#define MATHPP_MAT_LOOP_COL(MAT, C) for (auto C = 0; C < MAT.COL_COUNT; ++C)
+#define MATHPP_MAT_LOOP(MAT, R, C) \
+    MATHPP_MAT_LOOP_ROW(MAT, R)    \
+    MATHPP_MAT_LOOP_COL(MAT, C)
 
 namespace MathPP
 {
@@ -70,7 +72,7 @@ namespace MathPP
         identity(TYPE const &value = 1)
         {
             auto ret = zeros();
-            for (auto rc = 0; rc < ret.ROW_COUNT; ++rc)
+            MATHPP_MAT_LOOP_ROW(ret, rc)
             {
                 ret.at(rc, rc) = value;
             }
