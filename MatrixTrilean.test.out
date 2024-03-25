@@ -1,0 +1,92 @@
+mat1 2x3: [[NEG, POS], [POS, ZER], [POS, NEG]]
+mat2 3x2: [[ZER, POS, ZER], [NEG, NEG, POS]]
+
+mat1+mat2 : cols= 3
+mat1+mat2 : rows= 3
+mat1+mat2 : [[-1, 2, 0], [0, -1, 1], [1, -1, 0]]
+-1	2	0	
+0	-1	1	
+1	-1	0	
+
+mat2-mat1 : cols= 3
+mat2-mat1 : rows= 3
+1	0	0	
+-2	-1	1	
+-1	1	0	
+mat2-mat1 : [[1, 0, 0], [-2, -1, 1], [-1, 1, 0]]
+
+3 * mat1 : cols= 2
+3 * mat1 : rows= 3
+3 * mat1 : [[-3, 3], [3, 0], [3, -3]]
+-3	3	
+3	0	
+3	-3	
+
+mat1 * 2.5 : cols= 2
+mat1 * 2.5 : rows= 3
+mat1 * 2.5 : [[-2.5, 2.5], [2.5, 0], [2.5, -2.5]]
+-2.5	2.5	
+2.5	0	
+2.5	-2.5	
+
+mat1 / 7 : cols= 2
+mat1 / 7 : rows= 3
+mat1 / 7 : [[0, 0], [0, 0], [0, 0]]
+0	0	
+0	0	
+0	0	
+
+mat1 / 1.1 : cols= 2
+mat1 / 1.1 : rows= 3
+mat1 / 1.1 : [[-0.909091, 0.909091], [0.909091, 0], [0.909091, -0.909091]]
+-0.909091	0.909091	
+0.909091	0	
+0.909091	-0.909091	
+
+mat1 trans : cols= 3
+mat1 trans : rows= 2
+mat1 trans : [[NEG, POS, POS], [POS, ZER, NEG]]
+NEG	POS	POS	
+POS	ZER	NEG	
+mat1       : [[NEG, POS], [POS, ZER], [POS, NEG]]
+NEG	POS	
+POS	ZER	
+POS	NEG	
+
+mat1 * trans : cols= 3
+mat1 * trans : rows= 3
+mat1 * trans : [[2, -1, -2], [-1, 1, 1], [-2, 1, 2]]
+2	-1	-2	
+-1	1	1	
+-2	1	2	
+
+matA : [[NEG, ZER], [POS, POS], [NEG, ZER]]
+NEG	ZER	
+POS	POS	
+NEG	ZER	
+matB : [[ZER, POS, NEG], [NEG, ZER, POS]]
+ZER	POS	NEG	
+NEG	ZER	POS	
+matAB : cols= 3
+matAB : rows= 3
+matAB : [[0, -1, 1], [-1, 1, 0], [0, -1, 1]]
+0	-1	1	
+-1	1	0	
+0	-1	1	
+matBA : cols= 2
+matBA : rows= 2
+matBA : [[2, 1], [0, 0]]
+2	1	
+0	0	
+
+
+TriMatrix<2, 3>.zeros() = [[ZER, ZER], [ZER, ZER], [ZER, ZER]]
+TriMatrix<2, 3>.ones() = [[POS, POS], [POS, POS], [POS, POS]]
+TriMatrix<3, 3>.identity() = [[POS, ZER, ZER], [ZER, POS, ZER], [ZER, ZER, POS]]
+TriMatrix<2, 2>.identity(NEG) = [[NEG, ZER], [ZER, NEG]]
+TriMatrix<5, 5>.identity(NEG).trans()*NEG = [[POS, ZER, ZER, ZER, ZER], [ZER, POS, ZER, ZER, ZER], [ZER, ZER, POS, ZER, ZER], [ZER, ZER, ZER, POS, ZER], [ZER, ZER, ZER, ZER, POS]]
+
+MULT_DATA_TYPE : NEG
+PLUS_DATA_TYPE : 0
+PLUSMULT_DATA_TYPE : -2
+
