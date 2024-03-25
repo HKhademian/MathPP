@@ -1,4 +1,4 @@
-sizeof(Trilean): 4
+sizeof(Trilean): 1
 
 NEG: -1
 ZER:  0
