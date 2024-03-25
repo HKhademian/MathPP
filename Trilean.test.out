@@ -1,0 +1,88 @@
+NEG: -1
+ZER:  0
+POS:  1
+
+! NEG:  1
+! ZER:  0
+! POS: -1
+
+NEG == NEG: 1
+NEG == ZER: 0
+NEG == POS: 0
+ZER == NEG: 0
+ZER == ZER: 1
+ZER == POS: 0
+POS == NEG: 0
+POS == ZER: 0
+POS == POS: 1
+
+NEG != NEG: 0
+NEG != ZER: 1
+NEG != POS: 1
+ZER != NEG: 1
+ZER != ZER: 0
+ZER != POS: 1
+POS != NEG: 1
+POS != ZER: 1
+POS != POS: 0
+
+NEG & NEG: -1
+NEG & ZER: -1
+NEG & POS: -1
+ZER & NEG: -1
+ZER & ZER:  0
+ZER & POS:  0
+POS & NEG: -1
+POS & ZER:  0
+POS & POS:  1
+
+NEG | NEG: -1
+NEG | ZER:  0
+NEG | POS:  1
+ZER | NEG:  0
+ZER | ZER:  0
+ZER | POS:  1
+POS | NEG:  1
+POS | ZER:  1
+POS | POS:  1
+
+NEG ^ NEG: -1
+NEG ^ ZER:  0
+NEG ^ POS:  1
+ZER ^ NEG:  0
+ZER ^ ZER:  0
+ZER ^ POS:  0
+POS ^ NEG:  1
+POS ^ ZER:  0
+POS ^ POS: -1
+
+NEG * NEG:  1
+NEG * ZER:  0
+NEG * POS: -1
+ZER * NEG:  0
+ZER * ZER:  0
+ZER * POS:  0
+POS * NEG: -1
+POS * ZER:  0
+POS * POS:  1
+
+NEG + NEG: -2
+NEG + ZER: -1
+NEG + POS: 0
+ZER + NEG: -1
+ZER + ZER: 0
+ZER + POS: 1
+POS + NEG: 0
+POS + ZER: 1
+POS + POS: 2
+
+NEG - NEG: 0
+NEG - ZER: -1
+NEG - POS: -2
+ZER - NEG: 1
+ZER - ZER: 0
+ZER - POS: -1
+POS - NEG: 2
+POS - ZER: 1
+POS - POS: 0
+
