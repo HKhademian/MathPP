@@ -6,8 +6,8 @@
 
 using namespace MathPP;
 
-template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SPACE, size_t _ROW_SPACE>
-void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SPACE, _ROW_SPACE> const &mat)
+template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SKIP, size_t _ROW_SKIP>
+void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SKIP, _ROW_SKIP> const &mat)
 {
     for (auto r = 0; r < mat.ROW_COUNT; ++r)
     {

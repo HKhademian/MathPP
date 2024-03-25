@@ -20,33 +20,33 @@ namespace MathPP
         size_t _COLS,
         size_t _ROWS,
         typename _DATA_TYPE = MATHPP_DEFAULT_DATA_TYPE,
-        size_t _COL_SPACE = 0,
-        size_t _ROW_SPACE = 0
+        size_t _COL_SKIP = 0,
+        size_t _ROW_SKIP = 0
         //
         >
     struct Matrix;
 
-    template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SPACE, size_t _ROW_SPACE>
+    template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SKIP, size_t _ROW_SKIP>
     struct Matrix
     {
     public:
         using TYPE = _DATA_TYPE;
         constexpr static const auto COL_COUNT = _COLS;
         constexpr static const auto ROW_COUNT = _ROWS;
-        constexpr static const auto COL_SPACE_SIZE = _COL_SPACE;
-        constexpr static const auto ROW_SPACE_SIZE = _ROW_SPACE;
-        using this_t = Matrix<COL_COUNT, ROW_COUNT, TYPE, COL_SPACE_SIZE, ROW_SPACE_SIZE>;
+        constexpr static const auto COL_SKIP_SIZE = _COL_SKIP;
+        constexpr static const auto ROW_SKIP_SIZE = _ROW_SKIP;
+        using this_t = Matrix<COL_COUNT, ROW_COUNT, TYPE, COL_SKIP_SIZE, ROW_SKIP_SIZE>;
 
     private:
-        constexpr static const auto COL_SPACE_COUNT = COL_COUNT > 0 ? COL_COUNT - 1 : 0;
-        constexpr static const auto ROW_SPACE_COUNT = ROW_COUNT > 0 ? ROW_COUNT - 1 : 0;
+        constexpr static const auto COL_SKIP_COUNT = COL_COUNT > 0 ? COL_COUNT - 1 : 0;
+        constexpr static const auto ROW_SKIP_COUNT = ROW_COUNT > 0 ? ROW_COUNT - 1 : 0;
         constexpr static const auto COL_SIZE = 1;
-        constexpr static const auto ROW_SIZE = COL_COUNT * COL_SIZE + COL_SPACE_COUNT * COL_SPACE_SIZE;
-        constexpr static const auto COL_SKIP = COL_SIZE + COL_SPACE_SIZE;
-        constexpr static const auto ROW_SKIP = ROW_SIZE + ROW_SPACE_SIZE;
+        constexpr static const auto ROW_SIZE = COL_COUNT * COL_SIZE + COL_SKIP_COUNT * COL_SKIP_SIZE;
+        constexpr static const auto COL_SKIP = COL_SIZE + COL_SKIP_SIZE;
+        constexpr static const auto ROW_SKIP = ROW_SIZE + ROW_SKIP_SIZE;
 
     public:
-        TYPE elements[(ROW_COUNT * ROW_SIZE) + (ROW_SPACE_COUNT * ROW_SPACE_SIZE)] = {0};
+        TYPE elements[(ROW_COUNT * ROW_SIZE) + (ROW_SKIP_COUNT * ROW_SKIP_SIZE)] = {0};
 
         /*
          * Instance
@@ -111,8 +111,8 @@ namespace MathPP
     };
 
     template <
-        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
-        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
+        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
     constexpr
 #ifdef MATHPP_NO_DIFF_SHAPE_OP
         typename std::enable_if<_COLS1 == _COLS2 && _ROWS1 == _ROWS2, Matrix<_COLS1, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus, 0, 0>>::type
@@ -120,8 +120,8 @@ namespace MathPP
         auto
 #endif
         operator+(
-            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
-            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
+            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1 > _COLS2 ? _COLS1 : _COLS2;
         constexpr const auto ROW_COUNT = _ROWS1 > _ROWS2 ? _ROWS1 : _ROWS2;
@@ -136,8 +136,8 @@ namespace MathPP
     }
 
     template <
-        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
-        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
+        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
     constexpr
 #ifdef MATHPP_NO_DIFF_SHAPE_OP
         typename std::enable_if<_COLS1 == _COLS2 && _ROWS1 == _ROWS2, Matrix<_COLS1, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus, 0, 0>>::type
@@ -145,8 +145,8 @@ namespace MathPP
         auto
 #endif
         operator-(
-            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
-            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+            Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
+            Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1 > _COLS2 ? _COLS1 : _COLS2;
         constexpr const auto ROW_COUNT = _ROWS1 > _ROWS2 ? _ROWS1 : _ROWS2;
@@ -162,10 +162,10 @@ namespace MathPP
 
     template <
         typename _DATA_TYPE1,
-        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
+        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
     constexpr auto operator*(
         _DATA_TYPE1 const &lhs,
-        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS2;
         constexpr const auto ROW_COUNT = _ROWS2;
@@ -180,10 +180,10 @@ namespace MathPP
     }
 
     template <
-        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
         typename _DATA_TYPE2>
     constexpr auto operator*(
-        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
+        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
         _DATA_TYPE2 const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1;
@@ -199,10 +199,10 @@ namespace MathPP
     }
 
     template <
-        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
         typename _DATA_TYPE2>
     constexpr auto operator/(
-        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
+        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
         _DATA_TYPE2 const &rhs)
     {
         constexpr const auto COL_COUNT = _COLS1;
@@ -218,12 +218,12 @@ namespace MathPP
     }
 
     template <
-        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SPACE1, size_t _ROW_SPACE1,
-        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SPACE2, size_t _ROW_SPACE2>
+        size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
+        size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
     constexpr typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0>>::type
     operator*(
-        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SPACE1, _ROW_SPACE1> const &lhs,
-        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SPACE2, _ROW_SPACE2> const &rhs)
+        Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
+        Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
         constexpr const auto MID_SIZE = _COLS1; // _ROWS2
         Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply, 0, 0> ret;
