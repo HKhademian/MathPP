@@ -1,4 +1,4 @@
-/// clear && gcc -o vector.out Vector.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./vector.out | tee ./vector.test.out && rm ./vector.out
+/// clear && gcc -o Vector.out Vector.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./Vector.out | tee ./Vector.test.out && rm ./Vector.out
 
 #include <iostream>
 #include "Vector.hpp"
