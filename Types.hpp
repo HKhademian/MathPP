@@ -34,8 +34,8 @@ namespace MathPP
     struct MathOp
     {
     private:
-        static T t1,t2;
-        static U u1,u2;
+        static T t1, t2;
+        static U u1, u2;
 
     public:
         using plus = typeof(t1 + u1);
@@ -51,41 +51,41 @@ namespace MathPP
     };
 
     template <typename T, T V1, T V2, typename = void>
-    struct Number
+    struct NumberCmp
     {
     };
 
     template <typename T, T V1, T V2>
-    struct Number<T, V1, V2, typename std::enable_if<(V1 >= V2)>::type>
+    struct NumberCmp<T, V1, V2, typename std::enable_if<(V1 >= V2)>::type>
     {
-        using min = std::integral_constant<T, V2>;
-        using max = std::integral_constant<T, V1>;
-        using eq = std::integral_constant<bool, false>;
-        static constexpr T minValue = min::value;
-        static constexpr T maxValue = max::value;
-        static constexpr bool isEqual = eq::value;
+        static constexpr T minValue = V2;
+        static constexpr T maxValue = V1;
+        static constexpr bool isEqual = false;
+        using min = std::integral_constant<T, minValue>;
+        using max = std::integral_constant<T, maxValue>;
+        using eq = std::integral_constant<bool, isEqual>;
     };
 
     template <typename T, T V1, T V2>
-    struct Number<T, V1, V2, typename std::enable_if<(V2 > V1)>::type>
+    struct NumberCmp<T, V1, V2, typename std::enable_if<(V2 > V1)>::type>
     {
-        using min = std::integral_constant<T, V1>;
-        using max = std::integral_constant<T, V2>;
-        using eq = std::integral_constant<bool, false>;
-        static constexpr T minValue = min::value;
-        static constexpr T maxValue = max::value;
-        static constexpr bool isEqual = eq::value;
+        static constexpr T minValue = V1;
+        static constexpr T maxValue = V2;
+        static constexpr bool isEqual = false;
+        using min = std::integral_constant<T, minValue>;
+        using max = std::integral_constant<T, maxValue>;
+        using eq = std::integral_constant<bool, isEqual>;
     };
 
     template <typename T, T V1, T V2>
-    struct Number<T, V1, V2, typename std::enable_if<(V2 == V1)>::type>
+    struct NumberCmp<T, V1, V2, typename std::enable_if<(V2 == V1)>::type>
     {
-        using min = std::integral_constant<T, V1>;
-        using max = std::integral_constant<T, V1>;
-        using eq = std::integral_constant<bool, true>;
-        static constexpr T minValue = min::value;
-        static constexpr T maxValue = max::value;
-        static constexpr bool isEqual = eq::value;
+        static constexpr T minValue = V1;
+        static constexpr T maxValue = V1;
+        static constexpr bool isEqual = true;
+        using min = std::integral_constant<T, minValue>;
+        using max = std::integral_constant<T, maxValue>;
+        using eq = std::integral_constant<bool, isEqual>;
     };
 
     template <bool cond, typename TypeIF, typename TypeElse>
@@ -101,6 +101,73 @@ namespace MathPP
     struct Conditional<false, TypeIF, TypeElse>
     {
         using type = TypeElse;
+    };
+
+    /*
+     * number type
+     */
+
+    template <typename T>
+    struct Number
+    {
+        constexpr static bool isNumber = false;
+        constexpr static bool isFloatingPoint = false;
+    };
+
+    template <>
+    struct Number<char>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = false;
+        using type = char;
+    };
+
+    template <>
+    struct Number<short>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = false;
+        using type = short;
+    };
+
+    template <>
+    struct Number<long>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = false;
+        using type = long;
+    };
+
+    template <>
+    struct Number<long long>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = false;
+        using type = long long;
+    };
+
+    template <>
+    struct Number<float>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = true;
+        using type = float;
+    };
+
+    template <>
+    struct Number<double>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = true;
+        using type = double;
+    };
+
+    template <>
+    struct Number<long double>
+    {
+        constexpr static bool isNumber = true;
+        constexpr static bool isFloatingPoint = true;
+        using type = long double;
     };
 
 }

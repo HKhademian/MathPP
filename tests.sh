@@ -1,4 +1,8 @@
 clear
+
+gcc -o Types.out Types.test.cpp -lstdc++
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types.out | tee ./Types.test.out && rm ./Types.out
+
 gcc -o Trilean.out Trilean.test.cpp -lstdc++
 echo "4 3 2 1 0 -1 -2 -3 -4" | ./Trilean.out | tee ./Trilean.test.out && rm ./Trilean.out
 
