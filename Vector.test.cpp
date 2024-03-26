@@ -37,7 +37,7 @@ int main()
     std::cout << "mul: " << vecB * 2.1 << "    " << sizeof(vecB * 2.1) << std::endl;
     std::cout << std::endl;
 
-    std::cout << "div: " << vecB / 3 << std::endl;
+    std::cout << "div: " << vecB / 2 << std::endl;
     std::cout << "div: " << vecB / 3.1f << std::endl;
     std::cout << "div: " << vecB / 3.1 << std::endl;
     std::cout << std::endl;
