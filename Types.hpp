@@ -5,22 +5,29 @@ namespace MathPP
 {
     // using size_t = unsigned int;
 
-    template <typename T>
-    constexpr char sign(T value)
+    enum sign_t : signed char
     {
-        if (value == 0)
-            return 0;
-        else if (value < 0)
-            return -1;
-        return +1;
+        NEGATIVE = -1,
+        ZERO = 0,
+        POSITIVE = +1,
+    };
+
+    template <typename T>
+    constexpr inline sign_t sign(T value)
+    {
+        if (value > 0)
+            return POSITIVE;
+        if (value < 0)
+            return NEGATIVE;
+        return ZERO;
     };
 
     template <>
-    constexpr char sign<bool>(bool value)
+    constexpr inline sign_t sign<bool>(bool value)
     {
         if (value)
-            return +1;
-        return 0;
+            return POSITIVE;
+        return ZERO;
     };
 
     template <typename T, typename U>

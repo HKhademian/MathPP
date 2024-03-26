@@ -9,48 +9,34 @@ namespace MathPP
     struct Trilean
     {
     private:
-        signed char value;
+        sign_t value;
 
     public:
-        constexpr static inline auto NEG()
-        {
-            return Trilean(sign(-1));
-        }
-
-        constexpr static inline auto ZER()
-        {
-            return Trilean(sign(0));
-        }
-
-        constexpr static inline auto POS()
-        {
-            return Trilean(sign(+1));
-        }
-
-    public:
-        constexpr Trilean() : value(0){};
-        constexpr Trilean(Trilean const &value) : value(value.value){};
-        explicit constexpr Trilean(bool value) : value(sign(value)){};
-        explicit constexpr Trilean(char value) : value(sign(value)){};
-        explicit constexpr Trilean(signed char value) : value(sign(value)){};
-        explicit constexpr Trilean(signed short value) : value(sign(value)){};
-        explicit constexpr Trilean(signed int value) : value(sign(value)){};
-        explicit constexpr Trilean(signed long value) : value(sign(value)){};
-        explicit constexpr Trilean(signed long long value) : value(sign(value)){};
-        explicit constexpr Trilean(float value) : value(sign(value)){};
-        explicit constexpr Trilean(double value) : value(sign(value)){};
-        explicit constexpr Trilean(long double value) : value(sign(value)){};
+        constexpr Trilean() : Trilean(ZERO){};
+        constexpr Trilean(sign_t value) : value(sign(value)){};
+        constexpr Trilean(Trilean const &value) : Trilean(sign(value.value)){};
+        constexpr Trilean(Trilean const &&value) : Trilean(sign(value.value)){};
+        explicit constexpr Trilean(signed int value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(bool value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(char value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(signed char value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(signed short value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(signed long value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(signed long long value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(float value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(double value) : Trilean(sign(value)){};
+        explicit constexpr Trilean(long double value) : Trilean(sign(value)){};
 
     public:
         constexpr inline bool operator==(Trilean rhs) const { return rhs.value == value; }
         constexpr inline bool operator!=(Trilean rhs) const { return rhs.value != value; }
 
+        /*explicit*/ constexpr inline operator signed int() const { return value; }
         /** TODO: is this ok? */
         explicit constexpr inline operator bool() const { return value >= 0; }
         explicit constexpr inline operator char() const { return value; }
         explicit constexpr inline operator signed char() const { return value; }
         explicit constexpr inline operator signed short() const { return value; }
-        /*explicit*/ constexpr inline operator signed int() const { return value; }
         explicit constexpr inline operator signed long() const { return value; }
         explicit constexpr inline operator signed long long() const { return value; }
         explicit constexpr inline operator float() const { return value; }
@@ -63,11 +49,11 @@ namespace MathPP
             value = rhs.value;
             return *this;
         }
-        };
+    };
 
-    constexpr static const auto NEG = Trilean::NEG();
-    constexpr static const auto ZER = Trilean::ZER();
-    constexpr static const auto POS = Trilean::POS();
+    constexpr static const auto NEG = Trilean(-1);
+    constexpr static const auto ZER = Trilean(0);
+    constexpr static const auto POS = Trilean(+1);
 
     /*
      * Kleene and Priest logics
