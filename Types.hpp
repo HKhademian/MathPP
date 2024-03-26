@@ -34,14 +34,16 @@ namespace MathPP
     struct MathOp
     {
     private:
-        static T t;
-        static U u;
+        static T t1,t2;
+        static U u1,u2;
 
     public:
-        using plus = typeof(t + u);
-        using minus = typeof(t - u);
-        using multiply = typeof(t * u);
-        using division = typeof(t / u);
+        using plus = typeof(t1 + u1);
+        using minus = typeof(t1 - u1);
+        using multiply = typeof(t1 * u1);
+        using division = typeof(t1 / u1);
+        using plus_mult = typeof((t1 * u1) + (t2 * u2));
+        using mult_plus = typeof((t1 + u1) * (t2 + u2));
         // typedef typeof(t % u) mod;
         // typedef typeof(t ^ u) Xor;
         // typedef typeof(t | u) Or;

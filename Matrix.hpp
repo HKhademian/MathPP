@@ -223,23 +223,17 @@ namespace MathPP
     template <
         size_t _COLS1, size_t _ROWS1, typename _DATA_TYPE1, size_t _COL_SKIP1, size_t _ROW_SKIP1,
         size_t _COLS2, size_t _ROWS2, typename _DATA_TYPE2, size_t _COL_SKIP2, size_t _ROW_SKIP2>
-    constexpr typename std::enable_if<_COLS1 == _ROWS2,
-                                      Matrix<_COLS2, _ROWS1,
-                                             typename MathOp<
-                                                 typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply,
-                                                 typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply>::plus,
-                                             0, 0>>::type
+    constexpr typename std::enable_if<_COLS1 == _ROWS2, Matrix<_COLS2, _ROWS1, typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus_mult, 0, 0>>::type
     operator*(
         Matrix<_COLS1, _ROWS1, _DATA_TYPE1, _COL_SKIP1, _ROW_SKIP1> const &lhs,
         Matrix<_COLS2, _ROWS2, _DATA_TYPE2, _COL_SKIP2, _ROW_SKIP2> const &rhs)
     {
-        typedef typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::multiply MULT_DATA_TYPE;
-        typedef typename MathOp<MULT_DATA_TYPE, MULT_DATA_TYPE>::plus RET_DATA_TYPE;
+        typedef typename MathOp<_DATA_TYPE1, _DATA_TYPE2>::plus_mult RET_DATA_TYPE;
         constexpr const auto MID_SIZE = _COLS1; // _ROWS2
         Matrix<_COLS2, _ROWS1, RET_DATA_TYPE, 0, 0> ret;
         MATHPP_MAT_LOOP(ret, r, c)
         {
-            typename decltype(ret)::TYPE v = RET_DATA_TYPE(0);
+            auto v = RET_DATA_TYPE(0);
             MATHPP_LOOP(MID_SIZE, i)
             {
                 v = v + RET_DATA_TYPE(lhs.at(r, i) * rhs.at(i, c));
