@@ -2,8 +2,6 @@
 #include <cstddef>
 #include "Types.hpp"
 
-#include <iostream>
-
 #define implicit
 namespace CircuitPP
 {
@@ -15,15 +13,6 @@ namespace CircuitPP
         V0 = false,
         V1 = true
     };
-
-    std::ostream &operator<<(std::ostream &os, DigitalV const &rhs)
-    {
-        if (rhs == DigitalV::V0)
-            os << "V0";
-        else if (rhs == DigitalV::V1)
-            os << "V1";
-        return os;
-    }
 
     /**
      *

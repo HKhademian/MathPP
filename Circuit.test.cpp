@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Circuit.hpp"
+#include "Circuit.iostream.hpp"
 
 using namespace CircuitPP;
 
