@@ -1,4 +1,5 @@
-CC=clang # gcc
+CC=gcc
+# CC=clang
 
 clear
 
