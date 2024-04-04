@@ -9,9 +9,15 @@ using namespace CircuitPP;
 int main(void)
 {
     const auto TICK = 5;
+    auto V0 = DigitalV::V0;
+    auto V1 = DigitalV::V1;
 
-    auto C0 = Wire(DigitalV::V0);
-    auto C1 = Wire(DigitalV::V1);
+    std::cout << "V0: " << V0 << std::endl;
+    std::cout << "V1: " << V1 << std::endl;
+    std::cout << std::endl;
+
+    auto C0 = Const(V0);
+    auto C1 = Const(V1);
 
     std::cout << "C0: " << (C0)(TICK) << std::endl;
     std::cout << "C1: " << (C1)(TICK) << std::endl;
