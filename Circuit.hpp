@@ -22,9 +22,17 @@ namespace CircuitPP
         virtual ValueT operator()(tick_t tick) const = 0;
     };
 
-    namespace
+    /*
+     *
+     * GATES
+     *
+     */
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Const(const ValueT &&value)
     {
-        template <typename ValueT>
         struct ConstGate : public LogicGate<ValueT>
         {
             const ValueT &value;
@@ -34,7 +42,14 @@ namespace CircuitPP
             ValueT operator()(tick_t tick) const override { return ValueT(value); }
         };
 
-        template <typename ValueT>
+        return ConstGate(value);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Wire(const LogicGate<ValueT> &input)
+    {
         struct WireGate : public LogicGate<ValueT>
         {
             const LogicGate<ValueT> &input;
@@ -44,7 +59,14 @@ namespace CircuitPP
             ValueT operator()(tick_t tick) const override { return ValueT(input(tick)); }
         };
 
-        template <typename ValueT>
+        return WireGate(input);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Not(const LogicGate<ValueT> &input)
+    {
         struct NotGate : public LogicGate<ValueT>
         {
             const LogicGate<ValueT> &input;
@@ -54,7 +76,14 @@ namespace CircuitPP
             ValueT operator()(tick_t tick) const override { return ValueT(!input(tick)); }
         };
 
-        template <typename ValueT>
+        return NotGate(input);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto And(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
         struct AndGate : public LogicGate<ValueT>
         {
             const LogicGate<ValueT> &inputA;
@@ -65,7 +94,14 @@ namespace CircuitPP
             ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) & inputB(tick)); }
         };
 
-        template <typename ValueT>
+        return AndGate(inputA, inputB);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Or(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
         struct OrGate : public LogicGate<ValueT>
         {
             const LogicGate<ValueT> &inputA;
@@ -76,7 +112,14 @@ namespace CircuitPP
             ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) | inputB(tick)); }
         };
 
-        template <typename ValueT>
+        return OrGate(inputA, inputB);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Xor(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
         struct XorGate : public LogicGate<ValueT>
         {
             const LogicGate<ValueT> &inputA;
@@ -86,60 +129,8 @@ namespace CircuitPP
 
             ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) ^ inputB(tick)); }
         };
-    }
 
-    /*
-     *
-     * GATES
-     *
-     */
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Const(const ValueT &value)
-    {
-        return ConstGate<ValueT>(value);
-    }
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Wire(const LogicGate<ValueT> &input)
-    {
-        return WireGate<ValueT>(input);
-    }
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Not(const LogicGate<ValueT> &input)
-    {
-        return NotGate<ValueT>(input);
-    }
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto And(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
-    {
-        return AndGate<ValueT>(inputA, inputB);
-    }
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Or(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
-    {
-        return OrGate<ValueT>(inputA, inputB);
-    }
-
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Xor(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
-    {
-        return XorGate<ValueT>(inputA, inputB);
+        return XorGate(inputA, inputB);
     }
 
     /*
