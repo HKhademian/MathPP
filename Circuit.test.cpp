@@ -8,6 +8,8 @@ using namespace CircuitPP;
 
 int main(void)
 {
+    std::cout << "START" << std::endl;
+    
     const auto TICK = 5;
     auto V0 = DigitalV::V0;
     auto V1 = DigitalV::V1;
@@ -25,8 +27,8 @@ int main(void)
 
     auto w0 = Wire(C0);
     auto w1 = Wire(C1);
-    std::cout << "!! C0: " << w0(TICK) << std::endl;
-    std::cout << "!! C1: " << w1(TICK) << std::endl;
+    std::cout << "+ C0: " << w0(TICK) << std::endl;
+    std::cout << "+ C1: " << w1(TICK) << std::endl;
     std::cout << std::endl;
 
     std::cout << "! C0: " << (Not(C0))(TICK) << std::endl;
@@ -55,9 +57,15 @@ int main(void)
     std::cout << "C1: " << (C1)(TICK) << std::endl;
     std::cout << std::endl;
 
-    auto cmplx = And(C1, Xor(Not(C0), C1));
-    std::cout << "Complex: " << cmplx(TICK) << std::endl;
+    std::cout << "temp 1: " << (!(!(!(C0 & C1))))(TICK) << std::endl;
+    std::cout << "temp 2: " << (Xor(Not(C0), C1))(TICK) << std::endl;
+    std::cout << "temp 3: " << (And(C1, Xor(Not(C0), C1)))(TICK) << std::endl;
+    std::cout << "temp 4: " << (!And(C1, Xor(Not(C0), C1)))(TICK) << std::endl;
     std::cout << std::endl;
 
+    std::cout << "Complex: " << (And(C1, Xor(Not(C0), C1)))(TICK) << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "FINISH" << std::endl;
     return 0;
 }

@@ -5,182 +5,214 @@
 #define implicit
 namespace CircuitPP
 {
-    using tick_t = unsigned short;
+    using tick_t = unsigned short const &;
 
-    enum class LogicGate : unsigned char
+    /*
+     *
+     * LOGIC GATES
+     *
+     */
+
+    template <typename ValueT>
+    struct LogicGate;
+
+    template <typename ValueT>
+    struct LogicGate
     {
-        CONST,
-        WIRE,
-        NOT,
-        AND,
-        OR,
-        XOR,
-        NAND,
-        NOR,
-        XNOR,
+        virtual ValueT operator()(tick_t tick) const = 0;
     };
 
-    /*
-     */
-    template <typename ValueT>
-    struct Logic
+    namespace
     {
-        const LogicGate logic;
-        ValueT const *value;
-        Logic<ValueT> const *inputA;
-        Logic<ValueT> const *inputB;
-
-        static constexpr inline auto CONST(ValueT const &value)
+        template <typename ValueT>
+        struct ConstGate : public LogicGate<ValueT>
         {
-            return Logic<ValueT>{.logic = LogicGate::CONST, .value = &value};
-        }
+            const ValueT &value;
 
-        static constexpr inline auto WIRE(Logic<ValueT> const &inputA)
-        {
-            return Logic<ValueT>{.logic = LogicGate::WIRE, .inputA = &inputA};
-        }
+            constexpr inline explicit ConstGate(const ValueT &value) : value(value) {}
 
-        static constexpr inline auto NOT(Logic<ValueT> const &inputA)
-        {
-            return Logic<ValueT>{.logic = LogicGate::NOT, .inputA = &inputA};
-        }
+            ValueT operator()(tick_t tick) const override { return ValueT(value); }
+        };
 
-        static constexpr inline auto AND(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
+        template <typename ValueT>
+        struct WireGate : public LogicGate<ValueT>
         {
-            return Logic<ValueT>{.logic = LogicGate::AND, .inputA = &inputA, .inputB = &inputB};
-        }
+            const LogicGate<ValueT> &input;
 
-        static constexpr inline auto OR(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
-        {
-            return Logic<ValueT>{.logic = LogicGate::OR, .inputA = &inputA, .inputB = &inputB};
-        }
+            constexpr inline explicit WireGate(const LogicGate<ValueT> &input) : input(input) {}
 
-        static constexpr inline auto XOR(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
-        {
-            return Logic<ValueT>{.logic = LogicGate::XOR, .inputA = &inputA, .inputB = &inputB};
-        }
+            ValueT operator()(tick_t tick) const override { return ValueT(input(tick)); }
+        };
 
-        static constexpr inline auto NAND(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
+        template <typename ValueT>
+        struct NotGate : public LogicGate<ValueT>
         {
-            return Logic<ValueT>{.logic = LogicGate::NAND, .inputA = &inputA, .inputB = &inputB};
-        }
+            const LogicGate<ValueT> &input;
 
-        static constexpr inline auto NOR(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
-        {
-            return Logic<ValueT>{.logic = LogicGate::NOR, .inputA = &inputA, .inputB = &inputB};
-        }
+            constexpr inline explicit NotGate(const LogicGate<ValueT> &input) : input(input) {}
 
-        static constexpr inline auto XNOR(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB)
-        {
-            return Logic<ValueT>{.logic = LogicGate::XNOR, .inputA = &inputA, .inputB = &inputB};
-        }
+            ValueT operator()(tick_t tick) const override { return ValueT(!input(tick)); }
+        };
 
-        constexpr inline ValueT operator()(tick_t const &tick) const
+        template <typename ValueT>
+        struct AndGate : public LogicGate<ValueT>
         {
-            switch (logic)
-            {
-            case LogicGate::CONST:
-            {
-                // std::cout << "CONST"
-                //           << " ptr: " << value
-                //           << " val: " << *value
-                //           << std::endl;
-                return ValueT(*value);
-            }
-            case LogicGate::WIRE:
-            {
-                auto valueA = (*inputA)(tick);
-                return ValueT(valueA);
-            }
-            case LogicGate::NOT:
-            {
-                auto valueA = (*inputA)(tick);
-                return ValueT(!valueA);
-            }
-            case LogicGate::AND:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT((valueA & valueB));
-            }
-            case LogicGate::OR:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT((valueA | valueB));
-            }
-            case LogicGate::XOR:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT((valueA ^ valueB));
-            }
-            case LogicGate::NAND:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT(!(valueA & valueB));
-            }
-            case LogicGate::NOR:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT(!(valueA | valueB));
-            }
-            case LogicGate::XNOR:
-            {
-                auto valueA = (*inputA)(tick);
-                auto valueB = (*inputB)(tick);
-                return ValueT(!(valueA ^ valueB));
-            }
-            default:
-                return ValueT(0);
-            }
-        }
-    };
+            const LogicGate<ValueT> &inputA;
+            const LogicGate<ValueT> &inputB;
+
+            constexpr inline explicit AndGate(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB) : inputA(inputA), inputB(inputB) {}
+
+            ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) & inputB(tick)); }
+        };
+
+        template <typename ValueT>
+        struct OrGate : public LogicGate<ValueT>
+        {
+            const LogicGate<ValueT> &inputA;
+            const LogicGate<ValueT> &inputB;
+
+            constexpr inline explicit OrGate(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB) : inputA(inputA), inputB(inputB) {}
+
+            ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) | inputB(tick)); }
+        };
+
+        template <typename ValueT>
+        struct XorGate : public LogicGate<ValueT>
+        {
+            const LogicGate<ValueT> &inputA;
+            const LogicGate<ValueT> &inputB;
+
+            constexpr inline explicit XorGate(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB) : inputA(inputA), inputB(inputB) {}
+
+            ValueT operator()(tick_t tick) const override { return ValueT(inputA(tick) ^ inputB(tick)); }
+        };
+    }
+
+    /*
+     *
+     * GATES
+     *
+     */
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Const(ValueT const &value) { return Logic<ValueT>::CONST(value); }
+    constexpr inline auto Const(const ValueT &value)
+    {
+        return ConstGate<ValueT>(value);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Wire(Logic<ValueT> const &inputA) { return Logic<ValueT>::WIRE(inputA); }
+    constexpr inline auto Wire(const LogicGate<ValueT> &input)
+    {
+        return WireGate<ValueT>(input);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Not(Logic<ValueT> const &inputA) { return Logic<ValueT>::NOT(inputA); }
+    constexpr inline auto Not(const LogicGate<ValueT> &input)
+    {
+        return NotGate<ValueT>(input);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto And(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::AND(inputA, inputB); }
+    constexpr inline auto And(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return AndGate<ValueT>(inputA, inputB);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Or(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::OR(inputA, inputB); }
+    constexpr inline auto Or(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return OrGate<ValueT>(inputA, inputB);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Xor(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::XOR(inputA, inputB); }
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Nand(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::NAND(inputA, inputB); }
-    /*
-     */
-    template <typename ValueT>
-    constexpr inline auto Nor(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::NOR(inputA, inputB); }
+    constexpr inline auto Xor(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return XorGate<ValueT>(inputA, inputB);
+    }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Xnor(Logic<ValueT> const &inputA, Logic<ValueT> const &inputB) { return Logic<ValueT>::XNOR(inputA, inputB); }
+    constexpr inline auto Nand(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Not(And(inputA, inputB));
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Nor(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Not(Or(inputA, inputB));
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline auto Xnor(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Not(Xor(inputA, inputB));
+    }
+
+    /*
+     *
+     * OPAERATORS
+     *
+     */
+
+    template <typename ValueT>
+    constexpr inline auto operator!(const LogicGate<ValueT> &input)
+    {
+        return Not(input);
+    }
+
+    template <typename ValueT>
+    constexpr inline auto operator&(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return And(inputA, inputB);
+    }
+
+    template <typename ValueT>
+    constexpr inline auto operator|(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Or(inputA, inputB);
+    }
+
+    template <typename ValueT>
+    constexpr inline auto operator^(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Xor(inputA, inputB);
+    }
+
+    template <typename ValueT>
+    constexpr inline auto operator==(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Xnor(inputA, inputB);
+    }
+
+    template <typename ValueT>
+    constexpr inline auto operator!=(const LogicGate<ValueT> &inputA, const LogicGate<ValueT> &inputB)
+    {
+        return Xor(inputA, inputB);
+    }
+
+    /*
+     *
+     * DIGITAL_VALUE
+     *
+     */
 
     enum class DigitalV : bool
     {
@@ -188,24 +220,34 @@ namespace CircuitPP
         V1 = true
     };
 
-    auto operator!(DigitalV const &value)
+    constexpr auto operator!(DigitalV const &value)
     {
         return DigitalV(!bool(value));
     }
 
-    auto operator&(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr auto operator&(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) & bool(rhs));
     }
 
-    auto operator|(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr auto operator|(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) | bool(rhs));
     }
 
-    auto operator^(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr auto operator^(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) ^ bool(rhs));
     }
+
+    // constexpr auto operator==(DigitalV const &lhs, DigitalV const &rhs)
+    // {
+    //     return bool(lhs) == bool(rhs);
+    // }
+
+    // constexpr auto operator!=(DigitalV const &lhs, DigitalV const &rhs)
+    // {
+    //     return bool(lhs) != bool(rhs);
+    // }
 }
 #undef implicit
