@@ -23,3 +23,6 @@ echo "4 3 2 1 0 -1 -2 -3 -4" | ./Circuit/DigitalV.test.o | tee ./Circuit/Digital
 
 $CC ./Circuit/Logic.test.cpp -lstdc++ -o ./Circuit/Logic.test.o
 echo "4 3 2 1 0 -1 -2 -3 -4" | ./Circuit/Logic.test.o | tee ./Circuit/Logic.test.out && rm ./Circuit/Logic.test.o
+
+$CC ./Circuit/Circuit.test.cpp -lstdc++ -o ./Circuit/Circuit.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Circuit/Circuit.test.o | tee ./Circuit/Circuit.test.out && rm ./Circuit/Circuit.test.o

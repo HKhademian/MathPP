@@ -15,32 +15,32 @@ namespace CircuitPP
         V1 = true
     };
 
-    constexpr auto operator!(DigitalV const &value)
+    constexpr inline auto operator!(DigitalV const &value)
     {
         return DigitalV(!bool(value));
     }
 
-    constexpr auto operator&(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator&(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) & bool(rhs));
     }
 
-    constexpr auto operator|(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator|(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) | bool(rhs));
     }
 
-    constexpr auto operator^(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator^(DigitalV const &lhs, DigitalV const &rhs)
     {
         return DigitalV(bool(lhs) ^ bool(rhs));
     }
 
-    // constexpr auto operator==(DigitalV const &lhs, DigitalV const &rhs)
+    // constexpr inline auto operator==(DigitalV const &lhs, DigitalV const &rhs)
     // {
     //     return bool(lhs) == bool(rhs);
     // }
 
-    // constexpr auto operator!=(DigitalV const &lhs, DigitalV const &rhs)
+    // constexpr inline auto operator!=(DigitalV const &lhs, DigitalV const &rhs)
     // {
     //     return bool(lhs) != bool(rhs);
     // }
