@@ -1,10 +1,9 @@
 #pragma once
-#include "Circuit.hpp"
+#include "DigitalV.hpp"
 #include <iostream>
 
 namespace CircuitPP
 {
-
     std::ostream &operator<<(std::ostream &os, DigitalV const &rhs)
     {
         if (rhs == DigitalV::V0)

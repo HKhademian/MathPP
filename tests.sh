@@ -3,20 +3,20 @@ CC=gcc
 
 clear
 
-$CC Types.test.cpp -lstdc++ -o Types.out
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types.out | tee ./Types.test.out && rm ./Types.out
+$CC ./Types/Types.test.cpp -lstdc++ -o ./Types/Types.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types/Types.test.o | tee ./Types/Types.test.out && rm ./Types/Types.test.o
 
-$CC Trilean.test.cpp -lstdc++ -o Trilean.out 
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Trilean.out | tee ./Trilean.test.out && rm ./Trilean.out
+$CC ./Types/Trilean.test.cpp -lstdc++ -o ./Types/Trilean.test.o 
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types/Trilean.test.o | tee ./Types/Trilean.test.out && rm ./Types/Trilean.test.o
 
-$CC Vector.test.cpp -lstdc++ -o Vector.out
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Vector.out | tee ./Vector.test.out && rm ./Vector.out
+$CC ./Math/Vector.test.cpp -lstdc++ -o ./Math/Vector.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Math/Vector.test.o | tee ./Math/Vector.test.out && rm ./Math/Vector.test.o
 
-$CC Matrix.test.cpp -lstdc++ -o Matrix.out
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Matrix.out | tee ./Matrix.test.out && rm ./Matrix.out
+$CC ./Math/Matrix.test.cpp -lstdc++ -o ./Math/Matrix.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Math/Matrix.test.o | tee ./Math/Matrix.test.out && rm ./Math/Matrix.test.o
 
-$CC MatrixTrilean.test.cpp -lstdc++ -o MatrixTrilean.out
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./MatrixTrilean.out | tee ./MatrixTrilean.test.out && rm ./MatrixTrilean.out
+$CC ./Math/MatrixTrilean.test.cpp -lstdc++ -o ./Math/MatrixTrilean.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Math/MatrixTrilean.test.o | tee ./Math/MatrixTrilean.test.out && rm ./Math/MatrixTrilean.test.o
 
-$CC Circuit.test.cpp -lstdc++ -o Circuit.out
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Circuit.out | tee ./Circuit.test.out && rm ./Circuit.out
+$CC ./Circuit/Logic.test.cpp -lstdc++ -o ./Circuit/Logic.test.o
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Circuit/Logic.test.o | tee ./Circuit/Logic.test.out && rm ./Circuit/Logic.test.o

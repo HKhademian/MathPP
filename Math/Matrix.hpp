@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "Types.hpp"
+#include "../Types/Types.hpp"
 
 #ifndef MATHPP_DEFAULT_DATA_TYPE
 #define MATHPP_DEFAULT_DATA_TYPE float

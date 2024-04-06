@@ -1,8 +1,9 @@
-/// clear && gcc -o Circuit.out Circuit.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./Circuit.out | tee ./Circuit.test.out && rm ./Circuit.out
+/// clear && gcc -o ./Circuit/Logic.out ./Circuit/Logic.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./Circuit/Logic.out | tee ./Circuit/Logic.test.out && rm ./Circuit/Logic.out
 
 #include <iostream>
-#include "Circuit.hpp"
-#include "Circuit.iostream.hpp"
+#include "Logic.hpp"
+#include "DigitalV.hpp"
+#include "DigitalV.iostream.hpp"
 
 using namespace CircuitPP;
 

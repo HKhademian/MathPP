@@ -1,10 +1,15 @@
-/// clear && gcc -o Matrix.out Matrix.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./Matrix.out | tee ./Matrix.test.out && rm ./Matrix.out
+/// clear && gcc -o ./Math/MatrixTrilean.out ./Math/MatrixTrilean.test.cpp -lstdc++ && echo "9 8 7 6 5 4 3 2 1" | ./Math/MatrixTrilean.out | tee ./Math/MatrixTrilean.test.out && rm ./Math/MatrixTrilean.out
 
-#include <iostream>
+#include "../Types/Trilean.hpp"
+#include "../Types/Trilean.iostream.hpp"
 #include "Matrix.hpp"
 #include "Matrix.iostream.hpp"
+#include <iostream>
 
 using namespace MathPP;
+
+template <size_t C, size_t R>
+using TriMatrix = Matrix<C, R, Trilean>;
 
 template <size_t _COLS, size_t _ROWS, typename _DATA_TYPE, size_t _COL_SKIP, size_t _ROW_SKIP>
 void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SKIP, _ROW_SKIP> const &mat)
@@ -21,19 +26,12 @@ void printMat(Matrix<_COLS, _ROWS, _DATA_TYPE, _COL_SKIP, _ROW_SKIP> const &mat)
 
 int main()
 {
-    Matrix<3, 4, int> mat1{101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
-    Matrix<4, 3, float> mat2{201.1, 202.1, 203.1, 204.1, 205.1, 206.1, 207.1, 208.1, 209.1, 210.1, 211.1, 212.1};
+    TriMatrix<2, 3> mat1{NEG, POS, POS, ZER, POS, NEG};
+    TriMatrix<3, 2> mat2{ZER, POS, ZER, NEG, NEG, POS};
 
     /*test1*/ {
-        std::cout << "float size: " << sizeof(float) << std::endl;
-        std::cout << "mat1 float 3x4 size: " << sizeof(mat1) << std::endl;
-        printMat(mat1);
-        std::cout << std::endl;
-    }
-
-    /*test2*/ {
-        std::cout << "mat1 float 3x4: " << mat1 << std::endl;
-        std::cout << "mat2 float 4x3: " << mat2 << std::endl;
+        std::cout << "mat1 2x3: " << mat1 << std::endl;
+        std::cout << "mat2 3x2: " << mat2 << std::endl;
         std::cout << std::endl;
     }
 
@@ -113,8 +111,8 @@ int main()
     }
 
     /*test11*/ {
-        Matrix<2, 3> matA{10, 20, 30, 40, 50, 60};
-        Matrix<3, 2> matB{1, 2, 3, 4, 5, 6};
+        TriMatrix<2, 3> matA{NEG, ZER, POS, POS, NEG, ZER};
+        TriMatrix<3, 2> matB{ZER, POS, NEG, NEG, ZER, POS};
         auto matAB = matA * matB;
         auto matBA = matB * matA;
         std::cout << "matA : " << matA << std::endl;
@@ -133,8 +131,8 @@ int main()
     }
 
     /*test12*/ {
-        Matrix<2, 3> matA;
-        Matrix<5, 3> matB;
+        TriMatrix<2, 3> matA;
+        TriMatrix<5, 3> matB;
         //// uncomment to get COMPILE TIME ERROR !
         // auto matAB = matA * matB;
         // auto matBA = matB * matA;
@@ -142,12 +140,25 @@ int main()
     }
 
     /*test13*/ {
-        std::cout << "Matrix<2, 3>.zeros() = " << Matrix<2, 3>::zeros() << std::endl;
-        std::cout << "Matrix<2, 3>.ones() = " << Matrix<2, 3>::ones() << std::endl;
-        // std::cout << "Matrix<2, 3>.identity() = " << Matrix<2, 3>::identity() << std::endl;
-        std::cout << "Matrix<3, 3>.identity() = " << Matrix<3, 3>::identity() << std::endl;
-        std::cout << "Matrix<2, 2>.identity(5) = " << Matrix<2, 2>::identity(5) << std::endl;
-        std::cout << "Matrix<5, 5>.identity(2).trans() = " << Matrix<5, 5>::identity(2).trans() << std::endl;
+        std::cout << "TriMatrix<2, 3>.zeros() = " << TriMatrix<2, 3>::zeros() << std::endl;
+        std::cout << "TriMatrix<2, 3>.ones() = " << TriMatrix<2, 3>::ones() << std::endl;
+        // std::cout << "TriMatrix<2, 3>.identity() = " << TriMatrix<2, 3>::identity() << std::endl;
+        std::cout << "TriMatrix<3, 3>.identity() = " << TriMatrix<3, 3>::identity() << std::endl;
+        std::cout << "TriMatrix<2, 2>.identity(NEG) = " << TriMatrix<2, 2>::identity(NEG) << std::endl;
+        std::cout << "TriMatrix<5, 5>.identity(NEG).trans()*NEG = " << TriMatrix<5, 5>::identity(NEG).trans() * NEG << std::endl;
+        std::cout << std::endl;
+    }
+
+    /*test14*/ {
+        typedef typename MathOp<Trilean, Trilean>::multiply MULT_DATA_TYPE;
+        typedef typename MathOp<Trilean, Trilean>::plus PLUS_DATA_TYPE;
+        typedef typename MathOp<MULT_DATA_TYPE, MULT_DATA_TYPE>::plus PLUSMULT_DATA_TYPE;
+        MULT_DATA_TYPE v1 = POS * NEG;
+        PLUS_DATA_TYPE v2 = POS + NEG;
+        PLUSMULT_DATA_TYPE v3 = (POS * NEG) + (NEG * POS);
+        std::cout << "MULT_DATA_TYPE : " << v1 << std::endl;
+        std::cout << "PLUS_DATA_TYPE : " << v2 << std::endl;
+        std::cout << "PLUSMULT_DATA_TYPE : " << v3 << std::endl;
         std::cout << std::endl;
     }
 
