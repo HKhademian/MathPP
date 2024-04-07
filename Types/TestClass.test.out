@@ -1,0 +1,69 @@
+--- test 11 ---
+TestClass:: ctor default
+
+--- test 12 ---
+TestClass:: ctor value copy
+
+--- test 13 ---
+TestClass:: ctor value move
+
+--- test 14 ---
+TestClass:: ctor value copy
+
+--- test 15 ---
+TestClass:: ctor value move
+
+--- test 16 ---
+TestClass:: ctor copy
+
+--- test 17 ---
+TestClass:: ctor copy
+
+--- test 18 ---
+TestClass:: ctor copy
+
+--- test 19 ---
+TestClass:: ctor move
+
+--- test 20 ---
+
+--- test 21 ---
+
+--- test 22 ---
+
+--- test 23 ---
+
+--- test 24 ---
+TestClass:: ctor copy
+
+--- test 25 ---
+TestClass:: ctor copy
+
+--- test 26 ---
+TestClass:: operator cast ValueT &
+
+--- test 27 ---
+TestClass:: operator cast ValueT &
+
+--- test 28 ---
+
+--- test 29 ---
+
+--- test 30 ---
+TestClass:: operator cast ValueT &
+
+--- test 31 ---
+TestClass:: operator cast ValueT const&
+
+--- test 32 ---
+TestClass:: operator cast ValueT &
+
+--- test 33 ---
+TestClass:: operator cast ValueT &
+
+--- test 34 ---
+TestClass:: operator cast ValueT &
+
+--- test 37 ---
+TestClass:: operator cast ValueT &
+

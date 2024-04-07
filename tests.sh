@@ -3,8 +3,9 @@ CC=gcc
 
 clear
 
-$CC ./Types/Types.test.cpp -lstdc++ -o ./Types/Types.test.o
-echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types/Types.test.o | tee ./Types/Types.test.out && rm ./Types/Types.test.o
+$CC ./Types/TestClass.test.cpp -lstdc++ -o ./Types/TestClass.test.o 
+echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types/TestClass.test.o | tee ./Types/TestClass.test.out && rm ./Types/TestClass.test.o
+
 
 $CC ./Types/Optional.test.cpp -lstdc++ -o ./Types/Optional.test.o 
 echo "4 3 2 1 0 -1 -2 -3 -4" | ./Types/Optional.test.o | tee ./Types/Optional.test.out && rm ./Types/Optional.test.o
