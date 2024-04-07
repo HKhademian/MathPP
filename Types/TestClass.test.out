@@ -67,3 +67,19 @@ TestClass:: operator cast ValueT &
 --- test 37 ---
 TestClass:: operator cast ValueT &
 
+--- test 38 ---
+Student:: operator==
+
+--- test 39 ---
+TestClass:: ctor value copy
+TestClass:: operator==
+Student:: operator==
+
+--- test 40 ---
+TestClass:: operator cast ValueT &
+Student:: operator==
+
+--- test 41 ---
+TestClass:: operator==
+Student:: operator==
+

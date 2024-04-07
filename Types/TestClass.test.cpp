@@ -21,7 +21,14 @@ struct Student
     int grade;
     int score;
     int rank;
+
+    auto operator==(Student const &other) const
+    {
+        std::cout << "Student:: operator==" << std::endl;
+        return id == other.id;
+    }
 };
+typedef TestClass<Student> TestStudent;
 
 int main()
 {
@@ -30,31 +37,31 @@ int main()
         Student student1, student2;
 
         std::cout << "--- test 11 ---" << std::endl;
-        TestClass<Student> x11;
+        TestStudent x11;
         std::cout << std::endl;
 
         std::cout << "--- test 12 ---" << std::endl;
-        TestClass<Student> x12(student1);
+        TestStudent x12(student1);
         std::cout << std::endl;
 
         std::cout << "--- test 13 ---" << std::endl;
-        TestClass<Student> x13(std::move(student1));
+        TestStudent x13(std::move(student1));
         std::cout << std::endl;
 
         std::cout << "--- test 14 ---" << std::endl;
-        const TestClass<Student> x14 = student2;
+        const TestStudent x14 = student2;
         std::cout << std::endl;
 
         std::cout << "--- test 15 ---" << std::endl;
-        TestClass<Student> x15 = std::move(student2);
+        TestStudent x15 = std::move(student2);
         std::cout << std::endl;
 
         std::cout << "--- test 16 ---" << std::endl;
-        TestClass<Student> x16(x15);
+        TestStudent x16(x15);
         std::cout << std::endl;
 
         std::cout << "--- test 17 ---" << std::endl;
-        TestClass<Student> x17 = x16;
+        TestStudent x17 = x16;
         std::cout << std::endl;
 
         std::cout << "--- test 18 ---" << std::endl;
@@ -110,7 +117,7 @@ int main()
         std::cout << std::endl;
 
         std::cout << "--- test 31 ---" << std::endl;
-        auto std31 = (Student const &)(const TestClass<Student> &)x25;
+        auto std31 = (Student const &)(const TestStudent &)x25;
         std::cout << std::endl;
 
         std::cout << "--- test 32 ---" << std::endl;
@@ -135,6 +142,22 @@ int main()
 
         std::cout << "--- test 37 ---" << std::endl;
         Student std37 = std::move(x25);
+        std::cout << std::endl;
+
+        std::cout << "--- test 38 ---" << std::endl;
+        auto res41 = (student1 == student2);
+        std::cout << std::endl;
+
+        std::cout << "--- test 39 ---" << std::endl;
+        auto res39 = (x11 == student1);
+        std::cout << std::endl;
+
+        std::cout << "--- test 40 ---" << std::endl;
+        auto res40 = (student1 == x11);
+        std::cout << std::endl;
+
+        std::cout << "--- test 41 ---" << std::endl;
+        auto res38 = (x11 == x12);
         std::cout << std::endl;
     }
 
