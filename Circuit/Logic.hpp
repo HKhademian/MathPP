@@ -40,7 +40,10 @@ namespace CircuitPP
 
             constexpr inline explicit ConstGate(const ValueT value) : value(value) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(value); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(value);
+            }
         };
 
         return std::make_shared<ConstGate>(value);
@@ -57,7 +60,10 @@ namespace CircuitPP
 
             constexpr inline explicit WireGate(const logic_ptr<ValueT> input) : input(input) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(((*input.get())(tick))); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(((*input)(tick)));
+            }
         };
 
         return std::make_shared<WireGate>(input);
@@ -74,7 +80,10 @@ namespace CircuitPP
 
             constexpr inline explicit NotGate(const logic_ptr<ValueT> input) : input(input) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(!((*input.get())(tick))); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(!((*input)(tick)));
+            }
         };
 
         return std::make_shared<NotGate>(input);
@@ -95,7 +104,10 @@ namespace CircuitPP
                 const logic_ptr<ValueT> inputB)
                 : inputA(inputA), inputB(inputB) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(((*inputA.get())(tick)) & ((*inputB.get())(tick))); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(((*inputA)(tick)) & ((*inputB)(tick)));
+            }
         };
 
         return std::make_shared<AndGate>(inputA, inputB);
@@ -113,7 +125,10 @@ namespace CircuitPP
 
             constexpr inline explicit OrGate(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) : inputA(inputA), inputB(inputB) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(((*inputA.get())(tick)) | ((*inputB.get())(tick))); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(((*inputA)(tick)) | ((*inputB)(tick)));
+            }
         };
 
         return std::make_shared<OrGate>(inputA, inputB);
@@ -131,7 +146,10 @@ namespace CircuitPP
 
             constexpr inline explicit XorGate(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) : inputA(inputA), inputB(inputB) {}
 
-            ValueT operator()(tick_t tick) const override { return ValueT(((*inputA.get())(tick)) ^ ((*inputB.get())(tick))); }
+            ValueT operator()(tick_t tick) const override
+            {
+                return ValueT(((*inputA)(tick)) ^ ((*inputB)(tick)));
+            }
         };
 
         return std::make_shared<XorGate>(inputA, inputB);
