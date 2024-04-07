@@ -25,34 +25,30 @@ namespace CircuitPP
 
     /*
      *
-     * GATES
+     * OPAERATORS
      *
      */
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Const(const ValueT value)
+    constexpr inline logic_ptr<ValueT> operator+(const ValueT input)
     {
         struct ConstGate : public LogicGate<ValueT>
         {
-            const ValueT value;
+            const ValueT input;
 
-            constexpr inline explicit ConstGate(const ValueT value) : value(value) {}
+            constexpr inline explicit ConstGate(const ValueT input) : input(input) {}
 
             ValueT operator()(tick_t tick) const override
             {
-                return ValueT(value);
+                return ValueT(input);
             }
         };
 
-        return std::make_shared<ConstGate>(value);
+        return std::make_shared<ConstGate>(input);
     }
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Wire(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> operator+(const logic_ptr<ValueT> input)
     {
         struct WireGate : public LogicGate<ValueT>
         {
@@ -69,10 +65,8 @@ namespace CircuitPP
         return std::make_shared<WireGate>(input);
     }
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Not(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> operator!(const logic_ptr<ValueT> input)
     {
         struct NotGate : public LogicGate<ValueT>
         {
@@ -89,10 +83,14 @@ namespace CircuitPP
         return std::make_shared<NotGate>(input);
     }
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> And(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator~(const logic_ptr<ValueT> input)
+    {
+        return !input;
+    }
+
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> operator&(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
     {
         struct AndGate : public LogicGate<ValueT>
         {
@@ -113,10 +111,8 @@ namespace CircuitPP
         return std::make_shared<AndGate>(inputA, inputB);
     }
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Or(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator|(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
     {
         struct OrGate : public LogicGate<ValueT>
         {
@@ -134,10 +130,8 @@ namespace CircuitPP
         return std::make_shared<OrGate>(inputA, inputB);
     }
 
-    /*
-     */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Xor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator^(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
     {
         struct XorGate : public LogicGate<ValueT>
         {
@@ -155,12 +149,78 @@ namespace CircuitPP
         return std::make_shared<XorGate>(inputA, inputB);
     }
 
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> operator==(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    {
+        return !(inputA ^ inputB);
+    }
+
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> operator!=(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    {
+        return (inputA ^ inputB);
+    }
+
+    /*
+     *
+     * GATES
+     *
+     */
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> Const(const ValueT input)
+    {
+        return (+input);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> Wire(const logic_ptr<ValueT> input)
+    {
+        return (+input);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> Not(const logic_ptr<ValueT> input)
+    {
+        return (!input);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> And(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    {
+        return (inputA & inputB);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> Or(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    {
+        return (inputA | inputB);
+    }
+
+    /*
+     */
+    template <typename ValueT>
+    constexpr inline logic_ptr<ValueT> Xor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    {
+        return (inputA ^ inputB);
+    }
+
     /*
      */
     template <typename ValueT>
     constexpr inline auto Nand(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
     {
-        return Not(And(inputA, inputB));
+        return !(inputA & inputB);
     }
 
     /*
@@ -168,57 +228,15 @@ namespace CircuitPP
     template <typename ValueT>
     constexpr inline auto Nor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
     {
-        return Not(Or(inputA, inputB));
+        return !(inputA | inputB);
     }
 
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Xnor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline auto Xnor(const logic_ptr<ValueT> inputA, logic_ptr<ValueT> inputB)
     {
-        return Not(Xor(inputA, inputB));
-    }
-
-    /*
-     *
-     * OPAERATORS
-     *
-     */
-
-    template <typename ValueT>
-    constexpr inline auto operator!(const logic_ptr<ValueT> input)
-    {
-        return Not(input);
-    }
-
-    template <typename ValueT>
-    constexpr inline auto operator&(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
-    {
-        return And(inputA, inputB);
-    }
-
-    template <typename ValueT>
-    constexpr inline auto operator|(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
-    {
-        return Or(inputA, inputB);
-    }
-
-    template <typename ValueT>
-    constexpr inline auto operator^(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
-    {
-        return Xor(inputA, inputB);
-    }
-
-    template <typename ValueT>
-    constexpr inline auto operator==(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
-    {
-        return Xnor(inputA, inputB);
-    }
-
-    template <typename ValueT>
-    constexpr inline auto operator!=(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
-    {
-        return Xor(inputA, inputB);
+        return !(inputA ^ inputB);
     }
 
 }
