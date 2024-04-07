@@ -22,22 +22,32 @@ int main(void)
     std::cout << std::endl;
 
     {
+        auto a = Bus<5, DigitalV>(7);
+        auto b = busOf<DigitalV, char>(12);
+        auto s = adder_ripple(a, b, DigitalV::V0);
+        std::cout << "A     =             " << a << std::endl;
+        std::cout << "B     =    " << b << std::endl;
+        std::cout << "(A+B) = " << s << std::endl;
+        std::cout << std::endl;
+    }
+
+    {
         auto a = busOf<DigitalV>(char(7));
         auto b = busOf<DigitalV>(char(12));
-        auto c = adder_ripple(a, b, DigitalV::V0);
+        auto s = adder_ripple(a, b, DigitalV::V0);
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
-        std::cout << "(A+B) = " << c << std::endl;
+        std::cout << "(A+B) = " << s << std::endl;
         std::cout << std::endl;
     }
 
     {
         auto a = busOf<DigitalV>((unsigned char)(141));
         auto b = busOf<DigitalV>((unsigned char)(145));
-        auto c = adder_ripple(a, b, DigitalV::V0);
+        auto s = adder_ripple(a, b, DigitalV::V0);
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
-        std::cout << "(A+B) = " << c << std::endl;
+        std::cout << "(A+B) = " << s << std::endl;
         std::cout << std::endl;
     }
 

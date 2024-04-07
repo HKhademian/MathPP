@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <algorithm>
 
 #define implicit
 namespace CircuitPP
@@ -50,7 +51,7 @@ namespace CircuitPP
     /*
      *
      * ADDER
-     * 
+     *
      */
 
     template <typename ValueT>
@@ -68,27 +69,43 @@ namespace CircuitPP
      * https://en.wikipedia.org/wiki/Adder_(electronics)#Ripple-carry_adder
      */
     template <typename ValueT>
-    constexpr inline auto adder_full(const ValueT a, const ValueT b, const ValueT c_in)
+    constexpr inline auto adder_full(
+        const ValueT a, const ValueT b, const ValueT c_in,
+        ValueT &s, ValueT &c_out)
     {
-        Bus<2, ValueT> result;
-        result[0] = a ^ b ^ c_in;
-        result[1] = (a & b) | (a & c_in) | (b & c_in);
-        return result;
+        auto c = c_in;
+        s = a ^ b ^ c;
+        c_out = (a & b) | (a & c) | (b & c);
     }
 
-    template <unsigned int n, typename ValueT>
-    constexpr inline auto adder_ripple(const Bus<n, ValueT> &a, const Bus<n, ValueT> &b, const ValueT c_in)
+    template <unsigned int n, unsigned int m, typename ValueT>
+    constexpr inline auto adder_ripple(
+        const Bus<n, ValueT> &a,
+        const Bus<m, ValueT> &b,
+        const ValueT c_in,
+        Bus<std::max(n, m) + 1, ValueT> &s)
     {
-        Bus<n + 1, ValueT> result;
         ValueT carry = c_in;
-        for (auto i = 0; i < n; ++i)
+        for (auto i = 0; i < std::max(n, m); ++i)
         {
-            auto res = adder_full(a[i], b[i], carry);
-            result[i] = res[0];
-            carry = res[1];
+            adder_full(
+                i < n ? a[i] : ValueT(0),
+                i < m ? b[i] : ValueT(0),
+                carry,
+                s[i], carry);
         }
-        result[n] = carry;
-        return result;
+        s[s.size - 1] = carry;
+    }
+
+    template <unsigned int n, unsigned int m, typename ValueT>
+    constexpr inline auto adder_ripple(
+        const Bus<n, ValueT> &a,
+        const Bus<m, ValueT> &b,
+        const ValueT c_in)
+    {
+        Bus<std::max(n, m) + 1, ValueT> s;
+        adder_ripple(a, b, c_in, s);
+        return s;
     }
 
     /**
@@ -107,19 +124,19 @@ namespace CircuitPP
         return result;
     }
 
-    template <unsigned int n, typename ValueT>
-    constexpr inline auto adder_lookahead(const Bus<n, ValueT> &a, const Bus<n, ValueT> &b, const ValueT c_in)
-    {
-        Bus<n + 1, ValueT> result;
-        ValueT carry = c_in;
-        for (auto i = 0; i < n; ++i)
-        {
-            auto res = adder_full(a[i], b[i], carry);
-            result[i] = res[0];
-            carry = res[1];
-        }
-        result[n] = carry;
-        return result;
-    }
+    // template <unsigned int n, typename ValueT>
+    // constexpr inline auto adder_lookahead(const Bus<n, ValueT> &a, const Bus<n, ValueT> &b, const ValueT c_in)
+    // {
+    //     Bus<n + 1, ValueT> result;
+    //     ValueT carry = c_in;
+    //     for (auto i = 0; i < n; ++i)
+    //     {
+    //         auto res = adder_full(a[i], b[i], carry);
+    //         result[i] = res[0];
+    //         carry = res[1];
+    //     }
+    //     result[n] = carry;
+    //     return result;
+    // }
 }
 #undef implicit

@@ -10,6 +10,10 @@ START
 18 = {V0,V0,V0,V1,V0,V0,V1,V0}
 19 = {V0,V0,V0,V1,V0,V0,V1,V1}
 
+A     =             {V0,V0,V1,V1,V1}
+B     =    {V0,V0,V0,V0,V1,V1,V0,V0}
+(A+B) = {V0,V0,V0,V0,V1,V0,V0,V1,V1}
+
 A     =    {V0,V0,V0,V0,V0,V1,V1,V1}
 B     =    {V0,V0,V0,V0,V1,V1,V0,V0}
 (A+B) = {V0,V0,V0,V0,V1,V0,V0,V1,V1}
