@@ -7,12 +7,12 @@
 namespace CircuitPP
 {
 
-    template <unsigned int n, typename ValueT>
+    template <typename ValueT, unsigned int _N>
     struct Bus
     {
         using type = ValueT;
-        static constexpr auto size = n;
-        ValueT value[n] = {ValueT(0)};
+        static constexpr auto size = _N;
+        ValueT value[size] = {ValueT(0)};
 
         Bus() = default;
         Bus(Bus const &) = default;
@@ -21,7 +21,7 @@ namespace CircuitPP
         template <typename T, typename = typename std::enable_if_t<std::is_integral_v<T>>>
         explicit Bus(T const &v)
         {
-            for (auto i = 0; i < n; ++i)
+            for (auto i = 0; i < size; ++i)
             {
                 value[i] = ValueT((v >> i) & 1);
             }
@@ -30,7 +30,7 @@ namespace CircuitPP
         template <typename T>
         Bus &operator=(T const &v)
         {
-            for (auto i = 0; i < n; ++i)
+            for (auto i = 0; i < size; ++i)
             {
                 value[i] = v[i];
             }
@@ -45,7 +45,7 @@ namespace CircuitPP
     constexpr inline auto busOf(T const &v)
     {
         constexpr auto size = sizeof(T) * 8;
-        return Bus<size, ValueT>(v);
+        return Bus<ValueT, size>(v);
     }
 
     /*
@@ -57,7 +57,7 @@ namespace CircuitPP
     template <typename ValueT>
     constexpr inline auto adder_half(const ValueT a, const ValueT b)
     {
-        Bus<2, ValueT> result;
+        Bus<ValueT, 2> result;
         result[0] = a ^ b;
         result[1] = a & b;
         return result;
@@ -80,10 +80,10 @@ namespace CircuitPP
 
     template <unsigned int n, unsigned int m, typename ValueT>
     constexpr inline auto adder_ripple(
-        const Bus<n, ValueT> &a,
-        const Bus<m, ValueT> &b,
+        const Bus<ValueT, n> &a,
+        const Bus<ValueT, m> &b,
         const ValueT c_in,
-        Bus<std::max(n, m) + 1, ValueT> &s)
+        Bus<ValueT, std::max(n, m) + 1> &s)
     {
         ValueT carry = c_in;
         for (auto i = 0; i < std::max(n, m); ++i)
@@ -99,11 +99,11 @@ namespace CircuitPP
 
     template <unsigned int n, unsigned int m, typename ValueT>
     constexpr inline auto adder_ripple(
-        const Bus<n, ValueT> &a,
-        const Bus<m, ValueT> &b,
+        const Bus<ValueT, n> &a,
+        const Bus<ValueT, m> &b,
         const ValueT c_in)
     {
-        Bus<std::max(n, m) + 1, ValueT> s;
+        Bus<ValueT, std::max(n, m) + 1> s;
         adder_ripple(a, b, c_in, s);
         return s;
     }
@@ -117,7 +117,7 @@ namespace CircuitPP
     template <typename ValueT>
     constexpr inline auto adder_pg(const ValueT a, const ValueT b, const ValueT c_in)
     {
-        Bus<3, ValueT> result;
+        Bus<ValueT, 3> result;
         result[0] /*s*/ = (a ^ b) ^ c_in;
         result[1] /*p*/ = (a | b);
         result[2] /*g*/ = (a & b);

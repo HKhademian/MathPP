@@ -4,15 +4,15 @@
 
 namespace CircuitPP
 {
-    template <unsigned int n, typename ValueT>
-    std::ostream &operator<<(std::ostream &os, Bus<n, ValueT> const &rhs)
+    template <typename ValueT, unsigned int N>
+    std::ostream &operator<<(std::ostream &os, Bus<ValueT, N> const &rhs)
     {
         os << "{";
-        for (auto i = 0; i < n; ++i)
+        for (auto i = 0; i < rhs.size; ++i)
         {
             if (i > 0)
                 os << ",";
-            os << rhs[n - i - 1];
+            os << rhs[rhs.size - i - 1];
         }
         os << "}";
         return os;

@@ -22,7 +22,7 @@ int main(void)
     std::cout << std::endl;
 
     {
-        auto a = Bus<5, DigitalV>(7);
+        auto a = Bus<DigitalV, 5>(7);
         auto b = busOf<DigitalV, char>(12);
         auto s = adder_ripple(a, b, DigitalV::V0);
         std::cout << "A     =             " << a << std::endl;
