@@ -8,13 +8,14 @@
 
 using namespace CircuitPP;
 
-int main(void)
+template <typename ValueT>
+void test(std::string const &typeName)
 {
-    std::cout << "START" << std::endl;
+    std::cout << "START " << typeName << std::endl;
 
     for (unsigned char i = 10; i < 20; ++i)
     {
-        auto v = busOf<DigitalV>(i);
+        auto v = busOf<ValueT>(i);
         std::cout << (int)i << " = ";
         std::cout << v;
         std::cout << std::endl;
@@ -22,9 +23,9 @@ int main(void)
     std::cout << std::endl;
 
     {
-        auto a = Bus<DigitalV, 5>(7);
-        auto b = busOf<DigitalV, char>(12);
-        auto s = adder_ripple(a, b, DigitalV::V0);
+        auto a = Bus<ValueT, 5>(7);
+        auto b = busOf<ValueT, char>(12);
+        auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =             " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
         std::cout << "(A+B) = " << s << std::endl;
@@ -32,9 +33,9 @@ int main(void)
     }
 
     {
-        auto a = busOf<DigitalV>(char(7));
-        auto b = busOf<DigitalV>(char(12));
-        auto s = adder_ripple(a, b, DigitalV::V0);
+        auto a = busOf<ValueT>(char(7));
+        auto b = busOf<ValueT>(char(12));
+        auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
         std::cout << "(A+B) = " << s << std::endl;
@@ -42,15 +43,22 @@ int main(void)
     }
 
     {
-        auto a = busOf<DigitalV>((unsigned char)(141));
-        auto b = busOf<DigitalV>((unsigned char)(145));
-        auto s = adder_ripple(a, b, DigitalV::V0);
+        auto a = busOf<ValueT>((unsigned char)(141));
+        auto b = busOf<ValueT>((unsigned char)(145));
+        auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
         std::cout << "(A+B) = " << s << std::endl;
         std::cout << std::endl;
     }
 
-    std::cout << "FINISH" << std::endl;
+    std::cout << "FINISH " << typeName << std::endl;
+}
+
+int main(void)
+{
+    test<DigitalV>("DigitalV");
+    test<bool>("bool");
+    test<int>("int");
     return 0;
 }
