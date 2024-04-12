@@ -33,16 +33,16 @@ namespace MathPP
          * INSTANCE
          */
 
-        constexpr static this_t const &from(DATA_TYPE const *memory)
+        constexpr inline static this_t const &from(DATA_TYPE const *memory) noexcept
         {
             return *(this_t const *)(void const *)memory;
         }
-        constexpr static this_t &from(DATA_TYPE *memory)
+        constexpr inline static this_t &from(DATA_TYPE *memory) noexcept
         {
             return *(this_t *)(void *)memory;
         }
 
-        constexpr static auto ofAll(DATA_TYPE const &value)
+        constexpr inline static auto ofAll(DATA_TYPE const &value) noexcept
         {
             this_t ret;
             for (std::size_t i = 0; i < ret.SIZE; ++i)
@@ -52,18 +52,18 @@ namespace MathPP
             return ret;
         }
 
-        constexpr static auto zeros() { return ofAll(0); }
-        constexpr static auto ones() { return ofAll(1); }
+        constexpr inline static auto zeros() noexcept { return ofAll(0); }
+        constexpr inline static auto ones() noexcept { return ofAll(1); }
 
         /*
          * access
          */
 
-        constexpr const DATA_TYPE &at(size_t index) const
+        constexpr inline DATA_TYPE const &at(size_t index) const noexcept
         {
             return memory[index * (STRIDE + 1)];
         }
-        constexpr DATA_TYPE &at(size_t index)
+        constexpr inline DATA_TYPE &at(size_t index) noexcept
         {
             return memory[index * (STRIDE + 1)];
         }
@@ -73,14 +73,14 @@ namespace MathPP
          */
 
         template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
-        constexpr auto const &subvec() const
+        constexpr inline auto const &subvec() const noexcept
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
             return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
         }
 
         template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
-        constexpr auto subvec()
+        constexpr inline auto subvec() noexcept
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
             return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
@@ -94,33 +94,33 @@ namespace MathPP
     template <size_t __S = SIZE>     \
     typename std::enable_if<(__S == SIZE) && (__S >= ___X) && (__S < ___Y), ___T>::type
 
-        if_size_ge(1, DATA_TYPE) constexpr const &v1() const { return at(0); }
-        if_size_ge(1, DATA_TYPE) constexpr &v1() { return at(0); }
-        if_size_ge(1, DATA_TYPE) constexpr const &x() const { return at(0); }
-        if_size_ge(1, DATA_TYPE) constexpr &x() { return at(0); }
-        if_size_ge(1, DATA_TYPE) constexpr const &width() const { return at(0); }
-        if_size_ge(1, DATA_TYPE) constexpr &width() { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline const &v1() const noexcept { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline &v1() noexcept { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline const &x() const noexcept { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline &x() noexcept { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline const &width() const noexcept { return at(0); }
+        if_size_ge(1, DATA_TYPE) constexpr inline &width() noexcept { return at(0); }
 
-        if_size_ge(2, DATA_TYPE) constexpr const &v2() const { return at(1); }
-        if_size_ge(2, DATA_TYPE) constexpr &v2() { return at(1); }
-        if_size_ge(2, DATA_TYPE) constexpr const &y() const { return at(1); }
-        if_size_ge(2, DATA_TYPE) constexpr &y() { return at(1); }
-        if_size_ge(2, DATA_TYPE) constexpr const &height() const { return at(1); }
-        if_size_ge(2, DATA_TYPE) constexpr &height() { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline const &v2() const noexcept { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline &v2() noexcept { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline const &y() const noexcept { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline &y() noexcept { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline const &height() const noexcept { return at(1); }
+        if_size_ge(2, DATA_TYPE) constexpr inline &height() noexcept { return at(1); }
 
-        if_size_ge(3, DATA_TYPE) constexpr const &v3() const { return at(2); }
-        if_size_ge(3, DATA_TYPE) constexpr &v3() { return at(2); }
-        if_size_ge(3, DATA_TYPE) constexpr const &z() const { return at(2); }
-        if_size_ge(3, DATA_TYPE) constexpr &z() { return at(2); }
-        if_size_ge(3, DATA_TYPE) constexpr const &depth() const { return at(2); }
-        if_size_ge(3, DATA_TYPE) constexpr &depth() { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline const &v3() const noexcept { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline &v3() noexcept { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline const &z() const noexcept { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline &z() noexcept { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline const &depth() const noexcept { return at(2); }
+        if_size_ge(3, DATA_TYPE) constexpr inline &depth() noexcept { return at(2); }
 
-        if_size_ge(4, DATA_TYPE) constexpr const &v4() const { return at(3); }
-        if_size_ge(4, DATA_TYPE) constexpr &v4() { return at(3); }
-        if_size_ge(4, DATA_TYPE) constexpr const &w() const { return at(3); }
-        if_size_ge(4, DATA_TYPE) constexpr &w() { return at(3); }
-        if_size_ge(4, DATA_TYPE) constexpr const &layer() const { return at(3); }
-        if_size_ge(4, DATA_TYPE) constexpr &layer() { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline const &v4() const noexcept { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline &v4() noexcept { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline const &w() const noexcept { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline &w() noexcept { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline const &layer() const noexcept { return at(3); }
+        if_size_ge(4, DATA_TYPE) constexpr inline &layer() noexcept { return at(3); }
 
         //         /*
         //          * 2D
