@@ -15,7 +15,7 @@ void test(std::string const &typeName)
     std::cout << "START " << typeName << std::endl;
     
     {
-        auto a = Bus<ValueT, 5>(7);
+        auto a = busOf<ValueT, 5>(7);
         auto b = busOf<ValueT, char>(12);
         auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =             " << a << std::endl;

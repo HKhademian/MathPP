@@ -1,58 +1,42 @@
 #pragma once
 
 #include <type_traits>
+#include <array>
+
 #include "./Eval.hpp"
 
 #define implicit
 namespace CircuitPP
 {
-    template <typename _ValueT, unsigned int _N>
-    struct Bus
+
+    template <typename _ValueT, std::size_t _size>
+    using Bus = std::array<_ValueT, _size>;
+
+    template <typename ValueT, std::size_t size, typename T>
+    constexpr auto busOf(T const &v) noexcept
     {
-        using ValueT = _ValueT;
-        static constexpr auto size = _N;
-        ValueT value[size] = {ValueT(0)};
-
-        Bus() = default;
-        Bus(Bus const &) = default;
-        Bus(Bus &&) = default;
-
-        template <typename T, typename = typename std::enable_if_t<std::is_integral_v<T>>>
-        explicit Bus(T const &v)
+        auto result = Bus<ValueT, size>();
+        for (auto i = 0; i < size; ++i)
         {
-            for (auto i = 0; i < size; ++i)
-            {
-                value[i] = ValueT((v >> i) & 1);
-            }
+            result[i] = ValueT((v >> i) & 1);
         }
-
-        template <typename T>
-        Bus &operator=(T const &v)
-        {
-            for (auto i = 0; i < size; ++i)
-            {
-                value[i] = v[i];
-            }
-            return *this;
-        }
-
-        constexpr inline ValueT const &operator[](unsigned int i) const { return value[i]; }
-        constexpr inline ValueT &operator[](unsigned int i) { return value[i]; }
-    };
-
-    template <typename ValueT, typename T>
-    constexpr inline auto busOf(T const &v)
-    {
-        constexpr unsigned int size = sizeof(T) * 8;
-        return Bus<ValueT, size>(v);
+        return result;
     }
 
-    template <typename ValueT, unsigned int N>
+    template <typename ValueT, typename T>
+    constexpr auto busOf(T const &v) noexcept
+    {
+        constexpr std::size_t size = sizeof(T) * 8;
+        return busOf<ValueT, size, T>(v);
+    }
+
+    /** eval for Bus<V,N> */
+    template <typename ValueT, std::size_t N>
     struct EvalType<Bus<ValueT, N>>
     {
         using outputT = Bus<EvalOutT<ValueT>, N>;
 
-        static constexpr inline Bus<EvalOutT<ValueT>, N> eval(Bus<ValueT, N> const &input, unsigned int tick)
+        static constexpr Bus<EvalOutT<ValueT>, N> eval(Bus<ValueT, N> const &input, std::size_t tick)
         {
             Bus<EvalOutT<ValueT>, N> result;
             for (auto i = 0; i < N; ++i)

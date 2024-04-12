@@ -36,7 +36,7 @@ namespace CircuitPP
         c_out = (a & b) | (a & c) | (b & c);
     }
 
-    template <unsigned int n, unsigned int m, typename ValueT>
+    template <std::size_t n, std::size_t m, typename ValueT>
     constexpr inline auto adder_ripple(
         const Bus<ValueT, n> &a,
         const Bus<ValueT, m> &b,
@@ -52,10 +52,10 @@ namespace CircuitPP
                 carry,
                 s[i], carry);
         }
-        s[s.size - 1] = carry;
+        s[s.size() - 1] = carry;
     }
 
-    template <unsigned int n, unsigned int m, typename ValueT>
+    template <std::size_t n, std::size_t m, typename ValueT>
     constexpr inline auto adder_ripple(
         const Bus<ValueT, n> &a,
         const Bus<ValueT, m> &b,
@@ -82,7 +82,7 @@ namespace CircuitPP
         return result;
     }
 
-    // template <unsigned int n, typename ValueT>
+    // template <std::size_t n, typename ValueT>
     // constexpr inline auto adder_lookahead(const Bus<n, ValueT> &a, const Bus<n, ValueT> &b, const ValueT c_in)
     // {
     //     Bus<n + 1, ValueT> result;
