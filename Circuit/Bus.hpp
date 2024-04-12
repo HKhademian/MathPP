@@ -9,8 +9,13 @@
 namespace CircuitPP
 {
 
-    template <typename _ValueT, std::size_t _size>
-    using Bus = std::array<_ValueT, _size>;
+    template <typename _ValueT, std::size_t _N>
+    // using Bus = std::array<_ValueT, _N>;
+    struct Bus : public std::array<_ValueT, _N>
+    {
+        using ValueT = _ValueT;
+        static constexpr auto N = _N;
+    };
 
     /** eval for Bus<V,N> */
     template <typename ValueT, std::size_t N>
