@@ -3,6 +3,7 @@
 #include "DigitalV.hpp"
 #include "DigitalV.iostream.hpp"
 #include "Bus.hpp"
+#include "Bus.ops.hpp"
 #include "Bus.iostream.hpp"
 #include "Circuit.hpp"
 #include <iostream>
