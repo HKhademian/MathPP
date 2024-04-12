@@ -14,7 +14,7 @@ namespace CircuitPP
     struct Bus : public std::array<_ValueT, _N>
     {
         using ValueT = _ValueT;
-        static constexpr auto N = _N;
+        static constexpr std::size_t N = _N;
     };
 
     /** eval for Bus<V,N> */
@@ -26,7 +26,7 @@ namespace CircuitPP
         static constexpr Bus<EvalOutT<ValueT>, N> eval(Bus<ValueT, N> const &input, std::size_t tick)
         {
             Bus<EvalOutT<ValueT>, N> result;
-            for (auto i = 0; i < N; ++i)
+            for (std::size_t i = 0; i < N; ++i)
             {
                 auto v = input[i];
                 result[i] = EvalType<ValueT>::eval(v, tick);

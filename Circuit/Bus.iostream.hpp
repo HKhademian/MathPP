@@ -8,11 +8,11 @@ namespace CircuitPP
     std::ostream &operator<<(std::ostream &os, Bus<ValueT, N> const &rhs)
     {
         os << "{";
-        for (auto i = 0; i < rhs.size(); ++i)
+        for (std::size_t i = 0; i < rhs.N; ++i)
         {
             if (i > 0)
                 os << ",";
-            os << rhs[rhs.size() - i - 1];
+            os << rhs[rhs.N - i - 1];
         }
         os << "}";
         return os;

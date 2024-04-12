@@ -10,7 +10,7 @@ namespace CircuitPP
     constexpr inline auto busOf(InputT v = InputT(0)) noexcept
     {
         auto result = Bus<ValueT, N>();
-        for (auto i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             result[i] = ValueT((v >> i) & 1);
         }
@@ -33,9 +33,9 @@ namespace CircuitPP
     constexpr inline auto operator>>(Bus<ValueT, N> const &lhs, const std::size_t M) noexcept
     {
         auto result = Bus<ValueT, N>();
-        const auto size = N > M ? N - M : 0;
+        const std::size_t size = N > M ? N - M : 0;
 
-        for (auto i = 0; i < size; ++i)
+        for (std::size_t i = 0; i < size; ++i)
         {
             result[i] = lhs[i + M];
         }
@@ -48,10 +48,10 @@ namespace CircuitPP
     constexpr inline auto operator<<(Bus<ValueT, N> const &lhs, const std::size_t M) noexcept
     {
         auto result = Bus<ValueT, N>();
-        const auto size = N > M ? N - M : 0;
+        const std::size_t size = N > M ? N - M : 0;
 
         // rest (left) is zero (default)
-        for (auto i = 0; i < size; ++i)
+        for (std::size_t i = 0; i < size; ++i)
         {
             result[i + M] = lhs[i];
         }
@@ -63,7 +63,7 @@ namespace CircuitPP
     constexpr inline auto operator&(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
     {
         auto result = Bus<ValueT, N>();
-        for (auto i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             result[i] = lhs[i] & rhs[i];
         }
@@ -74,7 +74,7 @@ namespace CircuitPP
     constexpr inline auto operator|(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
     {
         auto result = Bus<ValueT, N>();
-        for (auto i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             result[i] = lhs[i] | rhs[i];
         }
@@ -85,7 +85,7 @@ namespace CircuitPP
     constexpr inline auto operator^(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
     {
         auto result = Bus<ValueT, N>();
-        for (auto i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             result[i] = lhs[i] ^ rhs[i];
         }
@@ -96,7 +96,7 @@ namespace CircuitPP
     constexpr inline auto operator!(Bus<ValueT, N> const &rhs) noexcept
     {
         auto result = Bus<ValueT, N>();
-        for (auto i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             result[i] = !rhs[i];
         }

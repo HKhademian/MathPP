@@ -9,7 +9,7 @@
 /// define this to prevent shape matrices ops (+ or -)
 // #define MATHPP_NO_DIFF_SHAPE_OP
 
-#define MATHPP_LOOP(LAST, V) for (auto V = 0; V < LAST; ++V)
+#define MATHPP_LOOP(LAST, V) for (std::size_t V = 0; V < LAST; ++V)
 #define MATHPP_MAT_LOOP_ROW(MAT, R) MATHPP_LOOP(MAT.ROW_COUNT, R)
 #define MATHPP_MAT_LOOP_COL(MAT, C) MATHPP_LOOP(MAT.COL_COUNT, C)
 #define MATHPP_MAT_LOOP(MAT, R, C) \

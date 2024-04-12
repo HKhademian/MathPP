@@ -44,7 +44,7 @@ namespace CircuitPP
         Bus<ValueT, std::max(n, m) + 1> &s) noexcept
     {
         ValueT carry = c_in;
-        for (auto i = 0; i < std::max(n, m); ++i)
+        for (std::size_t i = 0; i < s.N - 1; ++i)
         {
             adder_full(
                 i < n ? a[i] : ValueT(0),

@@ -38,7 +38,7 @@ int main(void)
     test<int>("int");
 
     auto test = busOf<unsigned short, 8>();
-    for (auto i = 0; i < test.size(); ++i)
+    for (std::size_t i = 0; i < test.size(); ++i)
     {
         test[i] = 1 + i;
     }
