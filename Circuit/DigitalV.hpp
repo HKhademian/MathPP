@@ -1,5 +1,7 @@
 #pragma once
 
+#include "./Eval.hpp"
+
 #define implicit
 namespace CircuitPP
 {
@@ -13,6 +15,18 @@ namespace CircuitPP
     {
         V0 = false,
         V1 = true
+    };
+
+    template <>
+    struct EvalType<DigitalV>
+    {
+        using inputT = DigitalV;
+        using outputT = DigitalV;
+
+        static outputT eval(inputT input, unsigned int tick)
+        {
+            return input;
+        }
     };
 
     constexpr inline auto operator!(DigitalV const &value)

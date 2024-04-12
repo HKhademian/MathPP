@@ -17,6 +17,10 @@ int main(void)
     std::cout << "V1: " << DigitalV::V1 << std::endl;
     std::cout << std::endl;
 
+    std::cout << "eval V0: " << eval(DigitalV::V0, 0) << std::endl;
+    std::cout << "eval V1: " << eval(DigitalV::V1, 0) << std::endl;
+    std::cout << std::endl;
+
     std::cout << "! V0: " << !V0 << std::endl;
     std::cout << "! V1: " << !V1 << std::endl;
     std::cout << std::endl;
@@ -44,6 +48,7 @@ int main(void)
         std::cout << "Complex2: (!V0 ^ V1) === " << (!V0 ^ V1) << std::endl;
         std::cout << "Complex3: (V1 & !V0 ^ V1) === " << (V1 & !V0 ^ V1) << std::endl;
         std::cout << "Complex4: (!(V1 & !V0 ^ V1)) === " << (!(V1 & !V0 ^ V1)) << std::endl;
+        std::cout << "Complex4: eval(!(V1 & !V0 ^ V1)) === " << eval(!(V1 & !V0 ^ V1), 0) << std::endl;
         std::cout << std::endl;
     }
 

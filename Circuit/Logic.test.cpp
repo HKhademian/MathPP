@@ -7,10 +7,11 @@
 
 using namespace CircuitPP;
 
-auto eval(const std::shared_ptr<LogicGate<DigitalV>> &gate)
+const auto TICK = 5;
+
+auto eval(const logic_ptr<DigitalV> gate)
 {
-    const auto TICK = 5;
-    return (*(gate.get()))(TICK);
+    return eval(gate, TICK);
 }
 
 int main(void)

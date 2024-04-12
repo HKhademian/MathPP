@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "../Types/Types.hpp"
+#include "./Eval.hpp"
 
 #define implicit
 namespace CircuitPP
@@ -22,6 +23,15 @@ namespace CircuitPP
 
     template <typename ValueT>
     using logic_ptr = std::shared_ptr<LogicGate<ValueT>>;
+
+    template <typename ValueT>
+    struct EvalType<logic_ptr<ValueT>>
+    {
+        static constexpr inline auto eval(logic_ptr<ValueT> input, unsigned int tick)
+        {
+            return (*input)(tick);
+        }
+    };
 
     /*
      *
