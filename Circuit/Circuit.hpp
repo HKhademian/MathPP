@@ -13,7 +13,7 @@ namespace CircuitPP
      */
 
     template <typename ValueT>
-    constexpr inline auto adder_half(const ValueT a, const ValueT b)
+    constexpr inline auto adder_half(const ValueT a, const ValueT b) noexcept
     {
         Bus<ValueT, 2> result;
         result[0] = a ^ b;
@@ -29,7 +29,7 @@ namespace CircuitPP
     template <typename ValueT>
     constexpr inline auto adder_full(
         const ValueT a, const ValueT b, const ValueT c_in,
-        ValueT &s, ValueT &c_out)
+        ValueT &s, ValueT &c_out) noexcept
     {
         auto c = c_in;
         s = a ^ b ^ c;
@@ -41,7 +41,7 @@ namespace CircuitPP
         const Bus<ValueT, n> &a,
         const Bus<ValueT, m> &b,
         const ValueT c_in,
-        Bus<ValueT, std::max(n, m) + 1> &s)
+        Bus<ValueT, std::max(n, m) + 1> &s) noexcept
     {
         ValueT carry = c_in;
         for (auto i = 0; i < std::max(n, m); ++i)
@@ -59,7 +59,7 @@ namespace CircuitPP
     constexpr inline auto adder_ripple(
         const Bus<ValueT, n> &a,
         const Bus<ValueT, m> &b,
-        const ValueT c_in)
+        const ValueT c_in) noexcept
     {
         Bus<ValueT, std::max(n, m) + 1> s;
         adder_ripple(a, b, c_in, s);
@@ -73,7 +73,7 @@ namespace CircuitPP
      * https://en.wikipedia.org/wiki/Carry-lookahead_adder
      */
     template <typename ValueT>
-    constexpr inline auto adder_pg(const ValueT a, const ValueT b, const ValueT c_in)
+    constexpr inline auto adder_pg(const ValueT a, const ValueT b, const ValueT c_in) noexcept
     {
         Bus<ValueT, 3> result;
         result[0] /*s*/ = (a ^ b) ^ c_in;

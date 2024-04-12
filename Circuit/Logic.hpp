@@ -7,7 +7,6 @@
 #define implicit
 namespace CircuitPP
 {
-    using tick_t = unsigned short const &;
 
     /*
      *
@@ -29,7 +28,7 @@ namespace CircuitPP
     {
         using outputT = ValueT;
 
-        static constexpr inline outputT eval(logic_ptr<ValueT> input, unsigned int tick)
+        static constexpr inline outputT eval(logic_ptr<ValueT> input, tick_t tick) noexcept
         {
             return (*input)(tick);
         }
@@ -42,7 +41,7 @@ namespace CircuitPP
      */
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator+(const ValueT input)
+    constexpr inline logic_ptr<ValueT> operator+(const ValueT input) noexcept
     {
         struct ConstGate : public LogicGate<ValueT>
         {
@@ -60,7 +59,7 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator+(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> operator+(const logic_ptr<ValueT> input) noexcept
     {
         struct WireGate : public LogicGate<ValueT>
         {
@@ -78,7 +77,7 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator!(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> operator!(const logic_ptr<ValueT> input) noexcept
     {
         struct NotGate : public LogicGate<ValueT>
         {
@@ -96,13 +95,13 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator~(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> operator~(const logic_ptr<ValueT> input) noexcept
     {
         return !input;
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator&(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator&(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         struct AndGate : public LogicGate<ValueT>
         {
@@ -124,7 +123,7 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator|(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator|(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         struct OrGate : public LogicGate<ValueT>
         {
@@ -143,7 +142,7 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator^(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator^(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         struct XorGate : public LogicGate<ValueT>
         {
@@ -162,13 +161,13 @@ namespace CircuitPP
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator==(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator==(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return !(inputA ^ inputB);
     }
 
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> operator!=(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> operator!=(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return (inputA ^ inputB);
     }
@@ -182,7 +181,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Const(const ValueT input)
+    constexpr inline logic_ptr<ValueT> Const(const ValueT input) noexcept
     {
         return (+input);
     }
@@ -190,7 +189,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Wire(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> Wire(const logic_ptr<ValueT> input) noexcept
     {
         return (+input);
     }
@@ -198,7 +197,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Not(const logic_ptr<ValueT> input)
+    constexpr inline logic_ptr<ValueT> Not(const logic_ptr<ValueT> input) noexcept
     {
         return (!input);
     }
@@ -206,7 +205,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> And(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> And(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return (inputA & inputB);
     }
@@ -214,7 +213,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Or(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> Or(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return (inputA | inputB);
     }
@@ -222,7 +221,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline logic_ptr<ValueT> Xor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline logic_ptr<ValueT> Xor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return (inputA ^ inputB);
     }
@@ -230,7 +229,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Nand(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline auto Nand(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return !(inputA & inputB);
     }
@@ -238,7 +237,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Nor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB)
+    constexpr inline auto Nor(const logic_ptr<ValueT> inputA, const logic_ptr<ValueT> inputB) noexcept
     {
         return !(inputA | inputB);
     }
@@ -246,7 +245,7 @@ namespace CircuitPP
     /*
      */
     template <typename ValueT>
-    constexpr inline auto Xnor(const logic_ptr<ValueT> inputA, logic_ptr<ValueT> inputB)
+    constexpr inline auto Xnor(const logic_ptr<ValueT> inputA, logic_ptr<ValueT> inputB) noexcept
     {
         return !(inputA ^ inputB);
     }

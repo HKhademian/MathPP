@@ -23,38 +23,38 @@ namespace CircuitPP
         using inputT = DigitalV;
         using outputT = DigitalV;
 
-        static outputT eval(inputT input, unsigned int tick)
+        static outputT eval(inputT input, tick_t tick)
         {
             return input;
         }
     };
 
-    constexpr inline auto operator!(DigitalV const &value)
+    constexpr inline auto operator!(DigitalV const &value) noexcept
     {
         return DigitalV(!bool(value));
     }
 
-    constexpr inline auto operator&(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator&(DigitalV const &lhs, DigitalV const &rhs) noexcept
     {
         return DigitalV(bool(lhs) & bool(rhs));
     }
 
-    constexpr inline auto operator|(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator|(DigitalV const &lhs, DigitalV const &rhs) noexcept
     {
         return DigitalV(bool(lhs) | bool(rhs));
     }
 
-    constexpr inline auto operator^(DigitalV const &lhs, DigitalV const &rhs)
+    constexpr inline auto operator^(DigitalV const &lhs, DigitalV const &rhs) noexcept
     {
         return DigitalV(bool(lhs) ^ bool(rhs));
     }
 
-    // constexpr inline auto operator==(DigitalV const &lhs, DigitalV const &rhs)
+    // constexpr inline auto operator==(DigitalV const &lhs, DigitalV const &rhs) noexcept
     // {
     //     return bool(lhs) == bool(rhs);
     // }
 
-    // constexpr inline auto operator!=(DigitalV const &lhs, DigitalV const &rhs)
+    // constexpr inline auto operator!=(DigitalV const &lhs, DigitalV const &rhs) noexcept
     // {
     //     return bool(lhs) != bool(rhs);
     // }
