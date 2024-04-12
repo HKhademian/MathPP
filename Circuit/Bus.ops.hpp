@@ -6,22 +6,27 @@
 namespace CircuitPP
 {
 
-    template <typename ValueT, std::size_t size, typename T = int>
-    constexpr auto busOf(T const &v = T(0)) noexcept
+    template <typename ValueT, std::size_t N, typename InputT = long long int>
+    constexpr auto busOf(InputT v = InputT(0)) noexcept
     {
-        auto result = Bus<ValueT, size>();
-        for (auto i = 0; i < size; ++i)
+        auto result = Bus<ValueT, N>();
+        for (auto i = 0; i < N; ++i)
         {
             result[i] = ValueT((v >> i) & 1);
         }
         return result;
     }
 
-    template <typename ValueT, typename T>
-    constexpr auto busOf(T const &v) noexcept
+    template <typename ValueT, typename InputT = long long int, std::size_t N = (sizeof(InputT) * 8)>
+    constexpr auto busOf(InputT v = InputT(0)) noexcept
     {
-        constexpr std::size_t size = sizeof(T) * 8;
-        return busOf<ValueT, size, T>(v);
+        return busOf<ValueT, N, InputT>(v);
+    }
+
+    template <std::size_t N = 0, typename ValueT = bool, typename InputT = long long int>
+    constexpr auto busOf(InputT v = InputT(0)) noexcept
+    {
+        return busOf<ValueT, N, InputT>(v);
     }
 
     template <typename ValueT, std::size_t N>
@@ -51,6 +56,50 @@ namespace CircuitPP
             result[i + M] = lhs[i];
         }
 
+        return result;
+    }
+
+    template <typename ValueT, std::size_t N>
+    constexpr auto operator&(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
+    {
+        auto result = Bus<ValueT, N>();
+        for (auto i = 0; i < N; ++i)
+        {
+            result[i] = lhs[i] & rhs[i];
+        }
+        return result;
+    }
+
+    template <typename ValueT, std::size_t N>
+    constexpr auto operator|(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
+    {
+        auto result = Bus<ValueT, N>();
+        for (auto i = 0; i < N; ++i)
+        {
+            result[i] = lhs[i] | rhs[i];
+        }
+        return result;
+    }
+
+    template <typename ValueT, std::size_t N>
+    constexpr auto operator^(Bus<ValueT, N> const &lhs, Bus<ValueT, N> const &rhs) noexcept
+    {
+        auto result = Bus<ValueT, N>();
+        for (auto i = 0; i < N; ++i)
+        {
+            result[i] = lhs[i] ^ rhs[i];
+        }
+        return result;
+    }
+
+    template <typename ValueT, std::size_t N>
+    constexpr auto operator!(Bus<ValueT, N> const &rhs) noexcept
+    {
+        auto result = Bus<ValueT, N>();
+        for (auto i = 0; i < N; ++i)
+        {
+            result[i] = !rhs[i];
+        }
         return result;
     }
 

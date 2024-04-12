@@ -14,10 +14,10 @@ template <typename ValueT>
 void test(std::string const &typeName)
 {
     std::cout << "START " << typeName << std::endl;
-    
+
     {
         auto a = busOf<ValueT, 5>(7);
-        auto b = busOf<ValueT, char>(12);
+        auto b = busOf<ValueT>(char(12));
         auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =             " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
@@ -26,8 +26,8 @@ void test(std::string const &typeName)
     }
 
     {
-        auto a = busOf<ValueT>(char(7));
-        auto b = busOf<ValueT>(char(12));
+        auto a = busOf<ValueT, char>(7);
+        auto b = busOf<ValueT, char>(12);
         auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;
@@ -36,8 +36,8 @@ void test(std::string const &typeName)
     }
 
     {
-        auto a = busOf<ValueT>((unsigned char)(141));
-        auto b = busOf<ValueT>((unsigned char)(145));
+        auto a = busOf<ValueT, unsigned char>(141);
+        auto b = busOf<ValueT, unsigned char>(145);
         auto s = adder_ripple(a, b, ValueT(0));
         std::cout << "A     =    " << a << std::endl;
         std::cout << "B     =    " << b << std::endl;

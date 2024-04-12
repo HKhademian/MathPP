@@ -37,17 +37,25 @@ int main(void)
     test<bool>("bool");
     test<int>("int");
 
-    auto test = busOf<int, 8>();
+    auto test = busOf<unsigned short, 8>();
     for (auto i = 0; i < test.size(); ++i)
     {
         test[i] = 1 + i;
     }
     std::cout << std::endl;
-    
+
     std::cout << "test " << test << std::endl;
     std::cout << "<< 2 " << (test << 2) << std::endl;
     std::cout << ">> 2 " << (test >> 2) << std::endl;
     std::cout << "eval " << eval(test, 0) << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "  busOf<8>(7)  " << busOf<8>(7) << std::endl;
+    std::cout << "  busOf<8>(12) " << busOf<8>(12) << std::endl;
+    std::cout << "! busOf<8>(12) " << !busOf<8>(12) << std::endl;
+    std::cout << "busOf<8>(12) & busOf<8>(7) " << (busOf<8>(12) & busOf<8>(7)) << std::endl;
+    std::cout << "busOf<8>(12) | busOf<8>(7) " << (busOf<8>(12) | busOf<8>(7)) << std::endl;
+    std::cout << "busOf<8>(12) ^ busOf<8>(7) " << (busOf<8>(12) ^ busOf<8>(7)) << std::endl;
     std::cout << std::endl;
 
     std::cout << "FINISH " << std::endl;
