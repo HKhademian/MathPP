@@ -27,7 +27,9 @@ namespace CircuitPP
     template <typename ValueT>
     struct EvalType<logic_ptr<ValueT>>
     {
-        static constexpr inline auto eval(logic_ptr<ValueT> input, unsigned int tick)
+        using outputT = ValueT;
+
+        static constexpr inline outputT eval(logic_ptr<ValueT> input, unsigned int tick)
         {
             return (*input)(tick);
         }

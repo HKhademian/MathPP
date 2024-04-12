@@ -50,9 +50,17 @@ namespace CircuitPP
     template <typename ValueT, unsigned int N>
     struct EvalType<Bus<ValueT, N>>
     {
-        static constexpr inline auto eval(Bus<ValueT, N> const &input, unsigned int tick)
+        using outputT = Bus<EvalOutT<ValueT>, N>;
+
+        static constexpr inline Bus<EvalOutT<ValueT>, N> eval(Bus<ValueT, N> const &input, unsigned int tick)
         {
-            return input; //(*input)(tick);
+            Bus<EvalOutT<ValueT>, N> result;
+            for (auto i = 0; i < N; ++i)
+            {
+                auto v = input[i];
+                result[i] = EvalType<ValueT>::eval(v, tick);
+            }
+            return result;
         }
     };
 

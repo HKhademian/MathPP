@@ -16,13 +16,16 @@ void test(std::string const &typeName)
     for (unsigned char i = 10; i < 20; ++i)
     {
         auto v = busOf<ValueT>(i);
-        std::cout << (int)i << " = ";
+        std::cout << "     " << (int)i << " = ";
         std::cout << v;
         std::cout << std::endl;
+        std::cout << "eval " << (int)i << " = ";
+        std::cout << eval(v, 0);
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
 
     std::cout << "FINISH " << typeName << std::endl;
+    std::cout << std::endl;
 }
 
 int main(void)

@@ -6,11 +6,16 @@ namespace CircuitPP
     template <typename ValueT>
     struct EvalType
     {
-        static constexpr inline auto eval(ValueT const &input, unsigned int tick)
+        using outputT = ValueT;
+
+        static constexpr inline outputT eval(ValueT const &input, unsigned int tick)
         {
             return input;
         }
     };
+
+    template <typename ValueT>
+    using EvalOutT = typename EvalType<ValueT>::outputT;
 
     template <typename ValueT>
     constexpr inline auto eval(ValueT const &input, unsigned int tick)
