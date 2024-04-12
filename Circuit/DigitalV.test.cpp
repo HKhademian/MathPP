@@ -46,9 +46,9 @@ int main(void)
     {
         std::cout << "Complex1: (!(!(!(V0 & V1)))) === " << (!(!(!(V0 & V1)))) << std::endl;
         std::cout << "Complex2: (!V0 ^ V1) === " << (!V0 ^ V1) << std::endl;
-        std::cout << "Complex3: (V1 & !V0 ^ V1) === " << (V1 & !V0 ^ V1) << std::endl;
-        std::cout << "Complex4: (!(V1 & !V0 ^ V1)) === " << (!(V1 & !V0 ^ V1)) << std::endl;
-        std::cout << "Complex4: eval(!(V1 & !V0 ^ V1)) === " << eval(!(V1 & !V0 ^ V1), 0) << std::endl;
+        std::cout << "Complex3: ((V1 & !V0) ^ V1) === " << ((V1 & !V0) ^ V1) << std::endl;
+        std::cout << "Complex4: (!((V1 & !V0) ^ V1)) === " << (!((V1 & !V0) ^ V1)) << std::endl;
+        std::cout << "Complex4: eval(!((V1 & !V0) ^ V1)) === " << eval(!((V1 & !V0) ^ V1), 0) << std::endl;
         std::cout << std::endl;
     }
 

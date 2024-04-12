@@ -17,11 +17,11 @@ namespace TypePP
         bool hasValue;
 
     public:
-        implicit constexpr Optional(Optional const &&opt) : hasValue(opt.hasValue), value(std::move(opt.value)){};
-        implicit constexpr Optional(Optional const &opt) : hasValue(opt.hasValue), value(opt.value){};
-        implicit constexpr Optional(ValueT const &&value) : hasValue(true), value(std::move(value)){};
-        implicit constexpr Optional(ValueT const &value) : hasValue(true), value(value){};
-        implicit constexpr Optional() : hasValue(false), value(ValueT()){};
+        implicit constexpr Optional(Optional const &&opt) : value(std::move(opt.value)), hasValue(opt.hasValue){};
+        implicit constexpr Optional(Optional const &opt) : value(opt.value), hasValue(opt.hasValue){};
+        implicit constexpr Optional(ValueT const &&value) : value(std::move(value)), hasValue(true){};
+        implicit constexpr Optional(ValueT const &value) : value(value), hasValue(true){};
+        implicit constexpr Optional() : value(ValueT()), hasValue(false){};
 
         /*
          * CHECK

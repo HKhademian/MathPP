@@ -16,12 +16,12 @@ namespace MathPP
      * 99              95              91              87              83
      */
 
-    template <size_t _SIZE, typename _DATA_TYPE = MATHPP_DEFAULT_DATA_TYPE, size_t _STRIDE = 0>
+    template <std::size_t _SIZE, typename _DATA_TYPE = MATHPP_DEFAULT_DATA_TYPE, std::size_t _STRIDE = 0>
     struct Vektor
     {
     public:
-        static constexpr const auto SIZE = _SIZE;
-        static constexpr const auto STRIDE = _STRIDE;
+        static constexpr const std::size_t SIZE = _SIZE;
+        static constexpr const std::size_t STRIDE = _STRIDE;
         using DATA_TYPE = _DATA_TYPE;
         using MEM_TYPE = DATA_TYPE[SIZE * (STRIDE + 1)];
         using this_t = Vektor<SIZE, DATA_TYPE, STRIDE>;
@@ -45,7 +45,7 @@ namespace MathPP
         constexpr static auto ofAll(DATA_TYPE const &value)
         {
             this_t ret;
-            for (auto i = 0; i < ret.SIZE; ++i)
+            for (std::size_t i = 0; i < ret.SIZE; ++i)
             {
                 ret.at(i) = value;
             }
@@ -213,7 +213,7 @@ namespace MathPP
         typedef typename MathOp<__T1, __T2>::plus type;
 
         Vektor<SIZE, type, 0> ret;
-        for (auto i = 0; i < ret.SIZE; ++i)
+        for (std::size_t i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) + rhs.at(i);
         }
@@ -227,7 +227,7 @@ namespace MathPP
         typedef typename MathOp<__T1, __T2>::minus type;
 
         Vektor<SIZE, type, 0> ret;
-        for (auto i = 0; i < ret.SIZE; ++i)
+        for (std::size_t i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) - rhs.at(i);
         }
@@ -239,7 +239,7 @@ namespace MathPP
     {
         typedef typename MathOp<__T1, __V>::multiply type;
         Vektor<__S1, type, 0> ret;
-        for (auto i = 0; i < ret.SIZE; ++i)
+        for (std::size_t i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = v * rhs.at(i);
         }
@@ -251,7 +251,7 @@ namespace MathPP
     {
         typedef typename MathOp<__T1, __V>::multiply type;
         Vektor<__S1, type, 0> ret;
-        for (auto i = 0; i < ret.SIZE; ++i)
+        for (std::size_t i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) * v;
         }
@@ -263,7 +263,7 @@ namespace MathPP
     {
         typedef typename MathOp<__T1, __V>::division type;
         Vektor<__S1, type, 0> ret;
-        for (auto i = 0; i < ret.SIZE; ++i)
+        for (std::size_t i = 0; i < ret.SIZE; ++i)
         {
             ret.at(i) = lhs.at(i) / v;
         }

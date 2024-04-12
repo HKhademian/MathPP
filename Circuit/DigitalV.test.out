@@ -25,8 +25,8 @@ V0 ^ V1: V1
 
 Complex1: (!(!(!(V0 & V1)))) === V1
 Complex2: (!V0 ^ V1) === V0
-Complex3: (V1 & !V0 ^ V1) === V0
-Complex4: (!(V1 & !V0 ^ V1)) === V1
-Complex4: eval(!(V1 & !V0 ^ V1)) === V1
+Complex3: ((V1 & !V0) ^ V1) === V0
+Complex4: (!((V1 & !V0) ^ V1)) === V1
+Complex4: eval(!((V1 & !V0) ^ V1)) === V1
 
 FINISH

@@ -21,16 +21,19 @@ int main()
     std::cout << std::endl;
 
     auto vecA = Vektor<2, int>::from(new int[100]);
+    (void)vecA;
     std::cin >> vecA;
     std::cout << "vecA 2I from input : " << vecA << std::endl;
     std::cout << std::endl;
 
     Vektor<4, int> vec;
+    (void)vec;
     std::cin >> vec;
     std::cout << "vec 4I from input : " << vec << std::endl;
     std::cout << std::endl;
 
     Vektor<4, int> &vecB = vec;
+    (void)vecB;
     std::cout << "mul: " << vecB * 2 << "    " << sizeof(vecB * 2) << std::endl;
     std::cout << "mul: " << vecB * 2 << "    " << sizeof(vecB * 2L) << std::endl;
     std::cout << "mul: " << vecB * 2.1f << "    " << sizeof(vecB * 2.1f) << std::endl;
@@ -60,6 +63,7 @@ int main()
         9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
         //
     };
+    (void)vec30;
 
     std::cout << std::endl;
     {
@@ -81,6 +85,7 @@ int main()
 
     {
         auto vec15 = vec30.subvec<15, 0, 1>();
+        (void)vec15;
         std::cout << "vec30         : " << vec30 << std::endl;
         std::cout << "vec15         : " << vec15 << std::endl;
 
@@ -120,6 +125,7 @@ int main()
 
     {
         Vektor<10, int> vec10{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        (void)vec10;
         std::cout << "vec10 offset 1: " << vec10 << std::endl;
         std::cout << "subvec 3 0    : " << vec10.subvec<3, 0>() << std::endl;
         std::cout << "subvec 3 1    : " << vec10.subvec<3, 1>() << std::endl;
@@ -129,6 +135,7 @@ int main()
     }
 
     const auto &vecConst = vec;
+    (void)vecConst;
     std::cout << "vecConst 4I from input : " << vecConst << std::endl;
     // std::cout << "vecConst 4I pos() : " << vecConst.pos() << std::endl;
     // std::cout << "vecConst 4I size() : " << vecConst.size() << std::endl;

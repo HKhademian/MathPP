@@ -3,7 +3,6 @@
 
 namespace MathPP
 {
-    // using size_t = unsigned int;
 
     enum sign_t : signed char
     {
