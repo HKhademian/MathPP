@@ -84,6 +84,12 @@ int main()
     }
 
     {
+        auto vec10 = vec30.subvec<10, 0, 1>();
+        (void)vec10;
+        std::cout << "vec30         : " << vec30 << std::endl;
+        std::cout << "vec10         : " << vec10 << std::endl;
+    }
+    {
         auto vec15 = vec30.subvec<15, 0, 1>();
         (void)vec15;
         std::cout << "vec30         : " << vec30 << std::endl;
@@ -94,17 +100,17 @@ int main()
         std::cout << "vec15         : " << vec15 << std::endl;
         std::cout << "subvec 4 0 2  : " << vec15.subvec<4, 0, 2>() << std::endl;
 
-        std::cout << "vec15         : " << vec15 << std::endl;
-        std::cout << "subvec 4 0 3  : " << vec15.subvec<4, 0, 3>() << std::endl;
+        // std::cout << "vec15         : " << vec15 << std::endl;
+        // std::cout << "subvec 4 0 3  : " << vec15.subvec<4, 0, 3>() << std::endl;
 
-        std::cout << "vec15         : " << vec15 << std::endl;
-        std::cout << "subvec 4 1 1  : " << vec15.subvec<4, 1, 1>() << std::endl;
+        // std::cout << "vec15         : " << vec15 << std::endl;
+        // std::cout << "subvec 4 1 1  : " << vec15.subvec<4, 1, 1>() << std::endl;
 
         std::cout << "vec15         : " << vec15 << std::endl;
         std::cout << "subvec 4 1 2  : " << vec15.subvec<4, 1, 2>() << std::endl;
 
-        std::cout << "vec15         : " << vec15 << std::endl;
-        std::cout << "subvec 4 1 3  : " << vec15.subvec<4, 1, 3>() << std::endl;
+        // std::cout << "vec15         : " << vec15 << std::endl;
+        // std::cout << "subvec 4 1 3  : " << vec15.subvec<4, 1, 3>() << std::endl;
 
         std::cout << "vec15         : " << vec15 << std::endl;
         std::cout << "subvec 4 1 1  : " << vec15.subvec<4, 1, 1>() << std::endl;

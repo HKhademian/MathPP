@@ -72,26 +72,26 @@ namespace MathPP
          * conversion
          */
 
-        template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
+        template <std::size_t __S, std::size_t __OFFSET = 0, std::size_t __STRIDE = 0>
         constexpr inline auto const &subvec() const noexcept
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
             return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
         }
 
-        template <size_t __S, size_t __OFFSET = 0, size_t __STRIDE = 0>
+        template <std::size_t __S, std::size_t __OFFSET = 0, std::size_t __STRIDE = 0>
         constexpr inline auto subvec() noexcept
         {
             constexpr const auto stride = (STRIDE + 1) * (__STRIDE + 1) - 1;
             return Vektor<__S, DATA_TYPE, stride>::from(&at(__OFFSET));
         }
 
-#define if_size_ge(___X, ___T)   \
-    template <size_t __S = SIZE> \
+#define if_size_ge(___X, ___T)        \
+    template <std::size_t __S = SIZE> \
     typename std::enable_if<(__S == SIZE) && (__S >= ___X), ___T>::type
 
-#define if_size_in(___X, ___Y, ___T) \
-    template <size_t __S = SIZE>     \
+#define if_size_in(___X, ___Y, ___T)  \
+    template <std::size_t __S = SIZE> \
     typename std::enable_if<(__S == SIZE) && (__S >= ___X) && (__S < ___Y), ___T>::type
 
         if_size_ge(1, DATA_TYPE) constexpr inline const &v1() const noexcept { return at(0); }
@@ -187,26 +187,26 @@ namespace MathPP
 #undef if_size_in
     };
 
-    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, std::size_t __STRIDE = 0>
     using Vektor2 = Vektor<2, T, __STRIDE>;
 
-    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, std::size_t __STRIDE = 0>
     using Vektor3 = Vektor<3, T, __STRIDE>;
 
-    template <typename T = MATHPP_DEFAULT_DATA_TYPE, size_t __STRIDE = 0>
+    template <typename T = MATHPP_DEFAULT_DATA_TYPE, std::size_t __STRIDE = 0>
     using Vektor4 = Vektor<4, T, __STRIDE>;
 
-    template <size_t __STRIDE = 0>
+    template <std::size_t __STRIDE = 0>
     using Vektor2S = Vektor2<signed int, __STRIDE>;
 
-    template <size_t __STRIDE = 0>
+    template <std::size_t __STRIDE = 0>
     using Vektor2I = Vektor2<unsigned int, __STRIDE>;
 
     /*
      * Operators
      */
 
-    template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
+    template <std::size_t __S1, typename __T1, std::size_t __STRIDE1, std::size_t __S2, typename __T2, std::size_t __STRIDE2>
     auto operator+(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
         constexpr const auto SIZE = __S1 <= __S2 ? __S1 : __S2;
@@ -220,7 +220,7 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t __S1, typename __T1, size_t __STRIDE1, size_t __S2, typename __T2, size_t __STRIDE2>
+    template <std::size_t __S1, typename __T1, std::size_t __STRIDE1, std::size_t __S2, typename __T2, std::size_t __STRIDE2>
     constexpr auto operator-(Vektor<__S1, __T1, __STRIDE1> const &lhs, Vektor<__S2, __T2, __STRIDE2> const &rhs)
     {
         constexpr const auto SIZE = __S1 <= __S2 ? __S1 : __S2;
@@ -234,7 +234,7 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    template <std::size_t __S1, typename __T1, std::size_t __STRIDE1, typename __V>
     constexpr auto operator*(__V v, Vektor<__S1, __T1, __STRIDE1> const &rhs)
     {
         typedef typename MathOp<__T1, __V>::multiply type;
@@ -246,7 +246,7 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    template <std::size_t __S1, typename __T1, std::size_t __STRIDE1, typename __V>
     constexpr auto operator*(Vektor<__S1, __T1, __STRIDE1> const &lhs, __V v)
     {
         typedef typename MathOp<__T1, __V>::multiply type;
@@ -258,7 +258,7 @@ namespace MathPP
         return ret;
     }
 
-    template <size_t __S1, typename __T1, size_t __STRIDE1, typename __V>
+    template <std::size_t __S1, typename __T1, std::size_t __STRIDE1, typename __V>
     constexpr auto operator/(Vektor<__S1, __T1, __STRIDE1> const &lhs, __V v)
     {
         typedef typename MathOp<__T1, __V>::division type;
